@@ -1,10 +1,12 @@
 from django.db import models
+from django.db.models import Avg
 from django.utils.translation import gettext as _
 from django.core.validators import FileExtensionValidator
 
 from colorfield.fields import ColorField
 from ckeditor.fields import RichTextField
 
+from apps.user.models import User
 from apps.utils.models import BaseModel
 
 
@@ -107,6 +109,12 @@ class ProductModel(BaseModel):
     rating = models.FloatField(
         default=0.0,
         verbose_name=_("Rating")
+    )
+    
+    sell_count = models.PositiveSmallIntegerField(
+        verbose_name=_("Sell Count"),
+        blank=True,
+        null=True
     )
 
     def __str__(self):
@@ -219,4 +227,90 @@ class ProductVideosModel(BaseModel):
     class Meta:
         verbose_name = _("Product Video")
         verbose_name_plural = _("Product Videos")
+        ordering = ('-created_at',)
+
+
+
+class ReviewModel(BaseModel):
+    """
+    Review model class.
+    """
+    comment = models.TextField(
+        verbose_name=_("Comments"),
+        blank=True,
+        null=True
+    )
+
+    rate = models.FloatField(
+        default=0.0,
+        verbose_name=_("Rating"),
+    )
+
+    product = models.ForeignKey(
+        ProductModel,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_("Product"),
+        related_name="review_products"
+    )
+
+    user  = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_("User")
+    )
+
+    # def __str__(self):
+    #     self.product.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.calculate_total_review()
+
+    def calculate_total_review(self):
+        product = self.product
+        if product:
+            # Calculate the average rating for the product
+            total_reviews = product.review_products.count()
+            average_rating = product.review_products.aggregate(Avg('rate'))['rate__avg'] or 0.0
+
+            # Update the product's rating field
+            product.rating = average_rating
+            product.save()
+
+    class Meta:
+        verbose_name = _("Review")
+        verbose_name_plural = _("Reviews")
+        ordering = ('-created_at',)
+
+
+class ReviewImageModel(BaseModel):
+    """
+    Review Image Model class.
+    """
+
+    review = models.ForeignKey(
+        ReviewModel,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="review_images",
+        verbose_name=_("Review")
+    )
+
+    image = models.ImageField(
+        verbose_name=_("Image"),
+        upload_to="review/images/"
+    )
+
+    # def __str__(self):
+    #     return str(self.review.product.title)
+
+
+    class Meta:
+        verbose_name = _("Review Image")
+        verbose_name_plural = _("Review Images")
         ordering = ('-created_at',)
