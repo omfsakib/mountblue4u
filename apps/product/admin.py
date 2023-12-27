@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django import forms
+from django.contrib.auth.models import Group
 from django.utils.html import format_html,linebreaks
 
 from apps.product.models import CategoryModel, SizeModel, ColorModel, ProductVariantModel, ProductImagesModel, \
-    ProductVideosModel, ProductModel
+    ProductVideosModel, ProductModel, ReviewImageModel, ReviewModel
 
 
 # Register your models here.
@@ -81,7 +82,7 @@ class ProductVideosInline(admin.TabularInline):
 class ProductModelForm(forms.ModelForm):
     class Meta:
         model = ProductModel
-        exclude = ['created_by', 'updated_by','rating']
+        exclude = ['created_by', 'updated_by','rating', 'sell_count']
 
 
 class ProductModelAdmin(admin.ModelAdmin):
@@ -100,3 +101,23 @@ class ProductModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ProductModel, ProductModelAdmin)
+
+
+class ReviewImageInline(admin.TabularInline):
+    model = ReviewImageModel
+    extra = 1
+    exclude = ['created_by', 'updated_by']
+
+class ReviewModelForm(forms.ModelForm):
+    class Meta:
+        model = ReviewModel
+        exclude = ['created_by', 'updated_by']
+
+class ReviewModelAdmin(admin.ModelAdmin):
+    form = ReviewModelForm
+    list_display = ('comment', 'rate', 'product', 'user', 'created_at')
+    inlines = [ReviewImageInline]
+
+admin.site.register(ReviewModel, ReviewModelAdmin)
+
+admin.site.unregister(Group)

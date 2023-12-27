@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.user',
     'apps.utils',
     'apps.promotion',
+    'apps.blog',
 
     'colorfield',
     'ckeditor',
@@ -82,21 +83,31 @@ AUTH_USER_MODEL = 'user.User'
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
+# Add this line to set the CKEDITOR_UPLOAD_PATH
+CKEDITOR_UPLOAD_PATH = 'content/ckeditor/'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+    },
+}
+
 # AWS S3 Configuration
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='us-east-1')  # Specify your region
 
-# Static files (CSS, JavaScript, Images)
-AWS_S3_STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
-STATIC_URL = AWS_S3_STATIC_URL
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# Static files (CSS, JavaScript, Images) - Local
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Adjust this path according to your project structure
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-# Media files (uploads)
+# Media files (uploads) - AWS S3
 AWS_S3_MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
 MEDIA_URL = AWS_S3_MEDIA_URL
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
