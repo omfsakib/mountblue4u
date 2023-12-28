@@ -8,6 +8,15 @@ from apps.product.models import CategoryModel, SizeModel, ColorModel, ProductVar
 
 
 # Register your models here.
+
+class ImagePreviewWidget(forms.ClearableFileInput):
+    def render(self, name, value, attrs=None, renderer=None):
+        output = super().render(name, value, attrs, renderer)
+        if value:
+            image_html = format_html('<br><img src="{}" style="max-height: 100px; max-width: 100px;" />', value.url)
+            output = format_html('{}{}', output, image_html)
+        return output
+
 class CategoryModelForm(forms.ModelForm):
     class Meta:
         model = CategoryModel
@@ -67,16 +76,37 @@ class ProductVariantInline(admin.TabularInline):
     exclude = ['created_by', 'updated_by']
 
 
+class MediaPreviewWidget(forms.ClearableFileInput):
+    def render(self, name, value, attrs=None, renderer=None):
+        output = super().render(name, value, attrs, renderer)
+        if value:
+            media_html = format_html('<br><{} src="{}" style="max-height: 100px; max-width: 100px;" />',
+                                     'img' if name.endswith('image') else 'video', value.url)
+            output = format_html('{}{}', output, media_html)
+        return output
+
+class ProductMediaForm(forms.ModelForm):
+    class Meta:
+        exclude = ['created_by', 'updated_by']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field.widget, forms.ClearableFileInput):
+                field.widget = MediaPreviewWidget(attrs={'class': 'vImageField'})
+
 class ProductImagesInline(admin.TabularInline):
     model = ProductImagesModel
+    form = ProductMediaForm
     extra = 1
     exclude = ['created_by', 'updated_by']
-
 
 class ProductVideosInline(admin.TabularInline):
     model = ProductVideosModel
+    form = ProductMediaForm
     extra = 1
     exclude = ['created_by', 'updated_by']
+
 
 
 class ProductModelForm(forms.ModelForm):
@@ -103,10 +133,19 @@ class ProductModelAdmin(admin.ModelAdmin):
 admin.site.register(ProductModel, ProductModelAdmin)
 
 
+class ReviewImageForm(forms.ModelForm):
+    class Meta:
+        model = ReviewImageModel
+        exclude = ['created_by', 'updated_by']
+
+    image = forms.ImageField(widget=ImagePreviewWidget)
+
 class ReviewImageInline(admin.TabularInline):
     model = ReviewImageModel
     extra = 1
+    form = ReviewImageForm
     exclude = ['created_by', 'updated_by']
+
 
 class ReviewModelForm(forms.ModelForm):
     class Meta:

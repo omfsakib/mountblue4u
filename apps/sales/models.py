@@ -16,7 +16,7 @@ class Order(BaseModel):
         customer_confirmed = 'customer_confirmed', _("Customer Confirmed")
         admin_confirmed = 'admin_confirmed', _("Admin Confirmed")
         in_transit = 'in_transit', _("In-Transit")
-        delivered = 'delivered', _("delivered")
+        delivered = 'delivered', _("Delivered")
         in_return = 'return', _("Return")
         cancel = 'cancel', _("Cancel")
 
