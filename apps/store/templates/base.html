@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mount Blue</title>
+    <meta name="keywords" content="Mount Blue">
+    <meta name="description" content="Mount Blue - eCommerce">
+    <meta name="author" content="mount-blue">
+    <meta name="apple-mobile-web-app-title" content="Mount-Blue">
+    <meta name="application-name" content="Mount-Blue">
+    <meta name="msapplication-TileColor" content="#cc9966">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+
+</head>
+
+    <body>
+        <div class="page-wrapper">
+            {% include 'components/header.html' %}
+        </div>
+
+     <!-- Plugins JS File -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/superfish.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+    </body>
+</html>
