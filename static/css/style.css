@@ -23716,3 +23716,31 @@ button:focus {
 /* '' */
 
 /*# sourceMappingURL=style.css.map */
+
+/* Add this CSS to your stylesheet */
+.feature_image {
+    overflow: hidden;
+}
+
+.zoom-on-hover img {
+    transition: transform 0.3s ease;
+}
+
+.zoom-on-hover:hover img {
+    transform: scale(1.1);
+}
+.zoom-on-hover:hover .svg-icon {
+    width: 60px;
+}
+
+.svg-icon {
+    transition: width 0.3s ease;
+}
+
+.svg-icon:hover {
+    width: 60px;
+}
+
+.svg-icon:hover .zoom-on-hover img{
+    transform: scale(1.1);
+}

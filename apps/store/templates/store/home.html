@@ -1,1 +1,19 @@
+
 {% extends 'base.html'%}
+{% load static %}
+
+{% block styles %}
+
+<link rel="stylesheet" href="{% static 'css/skins/skin-demo-6.css' %}">
+<link rel="stylesheet" href="{% static 'css/demos/demo-6.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'store/sections/banner.html' %}
+{% include 'store/sections/top_trending.html' %}
+{% include 'store/sections/featured_category.html' %}
+{% include 'store/sections/new_arrivals.html' %}
+{% include 'store/sections/campaign.html' %}
+{% include 'store/sections/our_services.html' %}
+{% include 'store/sections/blog.html' %}
+{% endblock %}

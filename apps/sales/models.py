@@ -95,7 +95,7 @@ class Order(BaseModel):
         max_length=200,
         blank=True,
         null=True,
-        choices=OrderStatus,
+        choices=OrderStatus.choices,
         verbose_name=_("Status")
     )
 

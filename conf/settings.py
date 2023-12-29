@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     'apps.preference',
     'apps.product',
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'apps.blog',
 
     'colorfield',
-    'ckeditor',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.preference.context_processors.get_context',
             ],
         },
     },

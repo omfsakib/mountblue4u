@@ -1,0 +1,19 @@
+<div class="pt-4 pb-3">
+    <div class="container">
+        <h2 class="title text-center mb-4">Top Trending Products</h2><!-- End .title text-center -->
+
+        <div class="products">
+            <div class="row justify-content-center">
+                {% for product in top_trending_products %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    {% include 'components/product-card.html' with tag='sale'%}
+                </div>
+                {% endfor %}
+            </div><!-- End .row -->
+        </div><!-- End .products -->
+
+        <div class="more-container text-center mt-2">
+            <a href="/shop" class="btn btn-outline-dark-2 btn-more"><span>show more</span></a>
+        </div><!-- End .more-container -->
+    </div>
+</div>

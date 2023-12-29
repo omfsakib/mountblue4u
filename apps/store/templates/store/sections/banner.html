@@ -1,0 +1,31 @@
+<div class="intro-slider-container">
+    <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light owl-loaded owl-drag" data-toggle="owl"
+         data-owl-options="{
+                        &quot;dots&quot;: true,
+                        &quot;nav&quot;: false,
+                        &quot;responsive&quot;: {
+                            &quot;992&quot;: {
+                                &quot;nav&quot;: false
+                            }
+                        }
+                    }">
+        <!-- End .intro-slide -->
+
+        <!-- End .intro-slide -->
+        <div class="owl-stage-outer">
+            <div class="owl-stage"
+                 style="transform: translate3d(-1671px, 0px, 0px); transition: all 0s ease 0s; width: 3342px;">
+                {% for banner in banners %}
+                <div class="owl-item{% if forloop.first %} active{% endif %}" style="width: 557px; height: 300px">
+                    <a href="{{banner.url_path}}" class="intro-slide"
+                         style="background-image: url('{{ banner.image.url }}');">
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div><!-- End .intro-slider owl-carousel owl-theme -->
+
+    <span class="slider-loader"></span><!-- End .slider-loader -->
+</div>
