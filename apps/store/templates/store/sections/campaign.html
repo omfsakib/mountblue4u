@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        {% for campaign in campaigns %}
+        <div class="col-sm-6">
+            <div class="banner banner-overlay">
+                <a href="{{campaign.url_path}}">
+                    <img src="{{campaign.image.url}}" alt="Banner">
+                </a>
+
+                <div class="banner-content banner-content-center">
+                    <h4 class="banner-subtitle text-white"><a href="{{campaign.url_path}}">{{campaign.starts_with}}</a></h4><!-- End .banner-subtitle -->
+                    <h3 class="banner-title text-white"><a href="{{campaign.starts_with}}"><strong>{{campaign.title}}</strong></a></h3>
+                    <!-- End .banner-title --><a href="{{campaign.starts_with}}">
+                </a><a href="#" class="btn btn-outline-white banner-link underline">Shop Now</a>
+                </div><!-- End .banner-content -->
+            </div><!-- End .banner -->
+        </div><!-- End .col-sm-6 -->
+        {% endfor %}
+    </div><!-- End .row -->
+    <hr class="mt-0 mb-0">
+</div>

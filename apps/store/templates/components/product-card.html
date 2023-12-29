@@ -1,0 +1,41 @@
+{% load humanize %}
+<div class="product product-7 text-center">
+    <figure class="product-media">
+        {% if product.discount_amount > 0 and tag == 'sale' %}
+        <span class="product-label label-sale">sale</span>
+        {% elif tag == 'new' %}
+        <span class="product-label label-new">New</span>
+        {% else %}
+        {% endif %}
+        <a href="#">
+            <img src="{{product.product_images.first.image.url}}" alt="Product image"
+                 class="product-image">
+            <img src="{{product.product_images.all.1.image.url}}" alt="Product image"
+                 class="product-image-hover">
+        </a>
+
+        <div class="product-action-vertical">
+            <a href="#"
+               class="btn-product-icon btn-expandable">
+                <i class="fa fa-heart-o" aria-hidden="true"></i><span>add to wishlist</span></a>
+        </div><!-- End .product-action-vertical -->
+
+        <div class="product-action">
+            <a href="#" class="btn-product add-to-cart"><i class="fa fa-cart-plus" aria-hidden="true"></i><span> add to cart</span></a>
+        </div><!-- End .product-action -->
+    </figure><!-- End .product-media -->
+
+    <div class="product-body">
+        <div class="product-cat">
+            <a href="#">{{product.category.name}}</a>
+        </div><!-- End .product-cat -->
+        <h3 class="product-title"><a href="#">{{product.title}}</a></h3>
+        <!-- End .product-title -->
+        <div class="product-price">
+            <span class="new-price">&#2547; {{product.price|floatformat:0}}</span>
+            {% with discounted_price=product.price|add:product.discount_amount %}
+            <del>&#2547; {{ discounted_price|floatformat:0 }}</del>
+            {% endwith %}
+        </div><!-- End .product-price -->
+    </div><!-- End .product-body -->
+</div>

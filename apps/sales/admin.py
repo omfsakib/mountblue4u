@@ -34,10 +34,12 @@ class PriceRangeFilter(admin.SimpleListFilter):
         # Add more conditions as needed
         return queryset
 
+
 class CustomOrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        exclude = ['created_by', 'updated_by', 'is_active','coupon_code','coupon_amount','transaction_id', 'method','complete']
+        exclude = ['created_by', 'updated_by', 'is_active', 'coupon_code', 'coupon_amount', 'transaction_id', 'method',
+                   'complete']
 
     def clean(self):
         cleaned_data = super().clean()
@@ -45,17 +47,18 @@ class CustomOrderForm(forms.ModelForm):
         return cleaned_data
 
 
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1
-    readonly_fields = ['product', 'quantity', 'price', 'total','size', 'color']
+    readonly_fields = ['product', 'quantity', 'price', 'total', 'size', 'color']
     exclude = ['created_by', 'updated_by', 'is_active']
+
 
 @admin.register(Order)
 class CustomOrderAdmin(admin.ModelAdmin):
     form = CustomOrderForm
-    list_display = ('uuid_last_5_digits', 'customer', 'status', 'total','due','advance', 'created_at', 'invoice_button')
+    list_display = (
+    'uuid_last_5_digits', 'customer', 'status', 'total', 'due', 'advance', 'created_at', 'invoice_button')
     search_fields = ['uuid', 'customer__phone', 'status']
     inlines = [OrderItemInline]
     list_filter = ['status', PriceRangeFilter, 'created_at']

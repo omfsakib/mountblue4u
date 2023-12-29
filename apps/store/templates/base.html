@@ -5,13 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Mount Blue</title>
+    <title>{{preference.site_name}}</title>
     <meta name="keywords" content="Mount Blue">
     <meta name="description" content="Mount Blue - eCommerce">
     <meta name="author" content="mount-blue">
     <meta name="apple-mobile-web-app-title" content="Mount-Blue">
     <meta name="application-name" content="Mount-Blue">
     <meta name="msapplication-TileColor" content="#cc9966">
+
+    {% block meta %}
+
+    {% endblock %}
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
@@ -27,26 +31,44 @@
 
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block styles %}
+
+    {% endblock %}
     <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
 
 </head>
 
-    <body>
-        <div class="page-wrapper">
-            {% include 'components/header.html' %}
-        </div>
+<body>
+<div class="page-wrapper">
+    {% include 'components/header.html' %}
+    <main class="main">
+        {% block content %}
 
-     <!-- Plugins JS File -->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
-    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'js/superfish.min.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
-    <script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
-    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-    <!-- Main JS File -->
-    <script src="{% static 'js/main.js' %}"></script>
-    </body>
+        {% endblock %}
+    </main>
+    {% include 'components/footer.html' %}
+</div>
+
+{% include 'components/signin-signup-modal.html' %}
+{% include 'components/poster-popup.html' %}
+{% include 'components/mobile-menu.html' %}
+
+
+<!-- Plugins JS File -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/superfish.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+<script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+{% block scripts %}
+
+{% endblock %}
+</body>
 </html>

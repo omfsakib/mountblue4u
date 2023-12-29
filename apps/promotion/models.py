@@ -14,12 +14,12 @@ class DeliveryChargeModel(BaseModel):
         default=0,
         verbose_name=_('Inside City Fee'),
     )
-    
+
     outside_fee = models.FloatField(
         default=0,
         verbose_name=_('Outside City Fee')
     )
-    
+
     discount = models.IntegerField(
         default=0,
         verbose_name=_('Discount')
@@ -43,7 +43,6 @@ class DeliveryChargeModel(BaseModel):
         ordering = ("-created_at",)
 
 
-
 class CouponModel(BaseModel):
     """
     Coupon model class
@@ -54,17 +53,17 @@ class CouponModel(BaseModel):
         null=True,
         max_length=100
     )
-    
+
     amount = models.FloatField(
         default=0,
         verbose_name=_("Amount")
     )
-    
+
     use_count = models.PositiveSmallIntegerField(
         default=0,
         verbose_name=_("Use Count"),
     )
-    
+
     expire_date = models.DateTimeField(
         verbose_name=_("Expire Date"),
         blank=True,
@@ -77,4 +76,41 @@ class CouponModel(BaseModel):
     class Meta:
         verbose_name = _("Coupon Code")
         verbose_name_plural = _("Coupon Codes")
+        ordering = ("-created_at",)
+
+
+class CampaignModel(BaseModel):
+    """
+    Campaign model class.
+    """
+    image = models.ImageField(
+        verbose_name=_("Image"),
+        upload_to="campaign/images"
+    )
+
+    title = models.CharField(
+        max_length=50,
+        verbose_name=_("Title"),
+    )
+
+    starts_with = models.CharField(
+        max_length=30,
+        blank=True,
+        null=True,
+        verbose_name=_("Starts with")
+    )
+
+    url_path = models.CharField(
+        verbose_name=_("URL path"),
+        blank=True,
+        null=True,
+        max_length=255,
+    )
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = _("Campaign")
+        verbose_name_plural = _("Campaign")
         ordering = ("-created_at",)
