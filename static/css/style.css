@@ -9272,8 +9272,6 @@ a:focus {
     display: flex;
     align-content: center;
     flex-direction: column;
-    padding-top: 2.1rem;
-    padding-bottom: 2.9rem;
 }
 
 .footer-bottom .container:before,
@@ -9282,7 +9280,6 @@ a:focus {
     display: block;
     height: 1px;
     position: absolute;
-    top: 0;
     left: 10px;
     right: 10px;
     background-color: #ebebeb;

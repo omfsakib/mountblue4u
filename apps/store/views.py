@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from apps.preference.models import BannerModel, TopTendingProductsModel
 from apps.product.models import CategoryModel, ProductModel
 from apps.promotion.models import CampaignModel
+from apps.blog.models import BlogModel
 
 
 class HomeView(TemplateView):
@@ -16,7 +17,8 @@ class HomeView(TemplateView):
             'top_trending_products': TopTendingProductsModel.objects.last().products.all()[:8],
             'featured_categorys': CategoryModel.objects.filter(is_active=True, is_featured=True),
             'new_arrivals': ProductModel.objects.filter(is_active=True).order_by('-created_at')[:8],
-            'campaigns': CampaignModel.objects.filter(is_active=True).order_by('-created_at')[:2]
+            'campaigns': CampaignModel.objects.filter(is_active=True).order_by('-created_at')[:2],
+            'blogs': BlogModel.objects.filter(is_active=True).order_by('-created_at'),
         }
-        # Add any additional context data here if needed
+
         return context
