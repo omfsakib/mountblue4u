@@ -144,7 +144,8 @@ class ProductVariantModel(BaseModel):
         verbose_name=_("Product"),
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
+        related_name="product_variants"
     )
 
     size = models.ForeignKey(
