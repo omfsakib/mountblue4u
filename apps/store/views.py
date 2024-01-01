@@ -9,7 +9,7 @@ from apps.blog.models import BlogModel
 
 
 class HomeView(TemplateView):
-    template_name = 'store/home.html'
+    template_name = 'store/pages/home.html'
 
     def get_context_data(self, **kwargs):
         context = {
@@ -21,4 +21,14 @@ class HomeView(TemplateView):
             'blogs': BlogModel.objects.filter(is_active=True).order_by('-created_at'),
         }
 
+        return context
+
+
+class ShopView(TemplateView):
+    template_name = 'store/pages/shop.html'
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'categories': CategoryModel.objects.filter(is_active=True)
+        }
         return context
