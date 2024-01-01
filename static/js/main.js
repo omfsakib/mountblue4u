@@ -164,30 +164,34 @@ $(document).ready(function () {
     // Slider For category pages / filter price
     if ( typeof noUiSlider === 'object' ) {
 		var priceSlider  = document.getElementById('price-slider');
+        var lowest_price = parseInt(document.getElementById('lowest_price').textContent, 10)
+        var highest_price = parseInt(document.getElementById('highest_price').textContent, 10)
 
 		// Check if #price-slider elem is exists if not return
 		// to prevent error logs
 		if (priceSlider == null) return;
 
 		noUiSlider.create(priceSlider, {
-			start: [ 0, 750 ],
+			start: [ lowest_price, highest_price ],
 			connect: true,
 			step: 50,
 			margin: 200,
 			range: {
-				'min': 0,
-				'max': 1000
+				'min': lowest_price,
+				'max': highest_price
 			},
 			tooltips: true,
 			format: wNumb({
 		        decimals: 0,
-		        prefix: '$'
+		        prefix: '৳'
 		    })
 		});
 
 		// Update Price Range
 		priceSlider.noUiSlider.on('update', function( values, handle ){
 			$('#filter-price-range').text(values.join(' - '));
+			$('#min_price_filter').val(parseInt(values[0].replace('৳',''), 10));
+			$('#max_price_filter').val(parseInt(values[1].replace('৳',''), 10));
 		});
 	}
 

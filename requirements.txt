@@ -6,3 +6,4 @@ django_storages==1.14.2
 Pillow==10.1.0
 django-colorfield==0.11.0
 django-ckeditor==6.7.0
+django_filter==23.5
