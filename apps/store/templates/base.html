@@ -35,6 +35,50 @@
 
     {% endblock %}
 
+    <script>
+        var user = '{{request.user}}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function getCookie(name) {
+            const cookieArr = document.cookie.split(";");
+
+            for (var i = 0; i < cookieArr.length; i++) {
+                const cookiePair = cookieArr[i].split("=");
+
+                if (name == cookiePair[0].trim()) {
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
+            return null;
+        }
+
+        var cart = JSON.parse(getCookie('cart'))
+
+        if (cart == undefined) {
+            cart = {}
+            console.log("Cart was created")
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
+        }
+
+        console.log('Cart:', cart)
+
+    </script>
+
 </head>
 
 <body>
@@ -65,6 +109,96 @@
 <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
+<script type="text/javascript">
+    var updateBtns = document.getElementsByClassName('update-cart')
+
+
+    for (var i = 0; i < updateBtns.length; i++) {
+        updateBtns[i].addEventListener('click', function () {
+            var productID = this.dataset.product
+            var action = this.dataset.action
+            var color = this.dataset.color
+            var quantity = this.dataset.quantity
+
+            if (color == undefined) {
+                color = "undefined"
+            }
+            if (quantity == undefined) {
+                quantity = 1
+            }
+            var size = this.dataset.size
+
+            if (size == undefined) {
+                size = "undefined"
+            }
+
+            if (user == 'AnonymousUser') {
+                addCookieItem(productID, action, color, size, quantity)
+            } else {
+                updateUserOrder(productID, action, color, size, quantity)
+            }
+        })
+    }
+
+    function addCookieItem(productID, action, color, size, quantity) {
+
+        if (action == 'add') {
+            if (cart[productID] == undefined) {
+                cart[productID] = {'quantity': quantity, 'size': size, 'color': color}
+            } else {
+                cart[productID]['quantity'] += parseInt(quantity)
+            }
+        }
+        if (action == 'remove') {
+            cart[productID]['quantity'] -= 1
+
+            if (cart[productID]['quantity'] <= 0) {
+                delete cart[productID]
+            }
+        }
+        if (action == 'delete') {
+            delete cart[productID]
+        }
+        if (action == 'color') {
+            cart[productID]['color'] = color
+        }
+        if (action == 'size') {
+            cart[productID]['size'] = size
+        }
+        console.log(cart)
+        document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
+        location.reload()
+    }
+
+    function updateUserOrder(productID, action, color, size, quantity) {
+        console.log('User is logged in, sending data...')
+
+        var url = '/update_item/'
+        const request = new Request(
+            url,
+            {headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrftoken}}
+        );
+        fetch(request, {
+            method: 'POST',
+            body: JSON.stringify({
+                'productID': productID,
+                'action': action,
+                'color': color,
+                'size': size,
+                'quantity': quantity,
+            })
+        })
+
+            .then((response) => {
+                return response.json()
+            })
+
+            .then((data) => {
+                console.log('data:', data)
+                location.reload()
+            })
+    }
+</script>
 {% block scripts %}
 
 {% endblock %}

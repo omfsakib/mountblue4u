@@ -70,10 +70,10 @@
                             </div><!-- End .product-action -->
 
                             <div class="product-action action-icon-top">
-                                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                   title="Quick view"><span>quick view</span></a>
-                                <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                <button  data-product={{product.uuid}} data-size="{{product.product_variants.first.size.uuid}}" data-color="{{product.product_variants.first.color.uuid}}" data-action="add" class="btn-product btn-cart update-cart"><span>add to cart</span></button>
+                                <button href="popup/quickView.html" class="btn-product btn-quickview"
+                                   title="Quick view"><span>quick view</span></button>
+                                <button href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></button>
                             </div><!-- End .product-action -->
                         </figure><!-- End .product-media -->
 

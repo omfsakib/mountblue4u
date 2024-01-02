@@ -312,7 +312,6 @@ $(document).ready(function () {
         });
 
         var ez = $('#product-zoom').data('elevateZoom');
-        console.log(ez.getGalleryList())
 
         // Open popup - product images
         $('#btn-product-gallery').on('click', function (e) {

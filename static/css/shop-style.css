@@ -7864,7 +7864,9 @@ a:focus {
   padding-top: 1.9rem;
   padding-bottom: 1.9rem;
   flex-grow: 1;
-  flex-basis: 0; }
+  flex-basis: 0;
+  background: transparent;
+  border: none;}
   .btn-product + .btn-product {
     border-left: .1rem dotted #e5e5e5; }
   .btn-product:before {
@@ -7934,12 +7936,14 @@ a:focus {
   margin-top: 1rem; }
 
 .btn-cart:before {
-  content: '\e812'; }
+  font-family: FontAwesome;
+  content: '\f07a'; }
 
 .btn-wishlist {
   font-size: 1.6rem; }
   .btn-wishlist:before {
-    content: '\f234'; }
+    font-family: FontAwesome;
+    content: '\f004'; }
 
 .product-body .btn-wishlist {
   position: absolute;
@@ -7958,10 +7962,12 @@ a:focus {
     background: none; }
 
 .btn-quickview:before {
-  content: '\f145'; }
+  font-family: FontAwesome;
+  content: '\f002'; }
 
 .btn-compare:before {
-  content: '\f2d0'; }
+  font-family: FontAwesome;
+  content: '\f074'; }
 
 .btn-expandable {
   position: relative; }
