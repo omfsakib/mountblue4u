@@ -58,7 +58,7 @@
                                 </a>
                                 {% endfor %}
                                 {% for image in product.product_images.all %}
-                                <a class="product-gallery-item active" href="#" data-type="image"
+                                <a class="product-gallery-item {% if forloop.first %}active{% endif %}" href="#" data-type="image"
                                    data-url="{{image.image.url}}" data-image="{{image.image.url}}">
                                     <img src="{{image.image.url}}" alt="product side">
                                 </a>
