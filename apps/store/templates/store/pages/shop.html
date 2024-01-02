@@ -38,10 +38,10 @@
                 <div class="toolbox-sort">
                     <label for="sortby">Sort by:</label>
                     <div class="select-custom">
-                        <select name="sortby" id="sortby" class="form-control">
-                            <option value="popularity" selected="selected">Most Popular</option>
-                            <option value="rating">Most Rated</option>
-                            <option value="date">Date</option>
+                        <select name="order_by" onchange="productArrange(this.value)" id="sortby" class="form-control">
+                            <option value="default" {% if applied_filters.order_by == 'default' %} selected="selected" {% endif %}>Default</option>
+                            <option value="price_asc" {% if applied_filters.order_by == 'price_asc' %} selected="selected" {% endif %}>Low to High</option>
+                            <option value="price_desc" {% if applied_filters.order_by == 'price_desc' %} selected="selected" {% endif %}>High to Low</option>
                         </select>
                     </div>
                 </div><!-- End .toolbox-sort -->
@@ -242,6 +242,16 @@
                 url.searchParams.append('show', showing_product);
             }
 
+            window.location.href = url.toString();
+    }
+
+    function productArrange(value) {
+            let url = new URL(window.location.href);
+            if (url.searchParams.has('order_by')) {
+                url.searchParams.set('order_by', value);
+            } else {
+                url.searchParams.append('order_by', value);
+            }
             window.location.href = url.toString();
     }
 </script>

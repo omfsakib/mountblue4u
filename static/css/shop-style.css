@@ -10896,7 +10896,6 @@ button:focus {
   padding-bottom: .5rem; }
   .filter-colors label {
     position: relative;
-    pointer-events: c;
     display: block;
     width: 2.4rem;
     height: 2.4rem;

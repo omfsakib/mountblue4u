@@ -9701,8 +9701,6 @@ a:focus {
 
 .breadcrumb-item + .breadcrumb-item:before {
     color: #999999;
-    content: '\f112';
-    font-family: "poppins";
     padding-right: .7rem;
     font-size: 1.1rem;
     vertical-align: middle;
@@ -11483,7 +11481,8 @@ a:focus {
 }
 
 .btn-cart:before {
-    content: '\e812';
+    font-family: "FontAwesome";
+    content: '\f07a';
 }
 
 .btn-wishlist {
@@ -11491,7 +11490,8 @@ a:focus {
 }
 
 .btn-wishlist:before {
-    content: '\f234';
+    font-family: "FontAwesome";
+    content: '\f004';
 }
 
 .product-body .btn-wishlist {
@@ -11518,11 +11518,13 @@ a:focus {
 }
 
 .btn-quickview:before {
+    font-family: "FontAwesome";
     content: '\f145';
 }
 
 .btn-compare:before {
-    content: '\f2d0';
+    font-family: "FontAwesome";
+    content: '\f074';
 }
 
 .btn-expandable {
@@ -11643,26 +11645,26 @@ a:focus {
     margin-bottom: 1.6rem;
 }
 
-.product-nav-thumbs a,
-.product-nav-thumbs span {
-    display: flex;
-    align-items: center;
-    width: 4.4rem;
-    height: 4.4rem;
-    border-radius: .2rem;
+.product-nav-thumbs label
+ {
+    position: relative;
+    display: block;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
     border: .2rem solid #fff;
-    margin-right: .4rem;
+    margin: 0 .3rem .3rem;
     transition: box-shadow .35s ease;
 }
 
-.product-nav-thumbs a.active, .product-nav-thumbs a:hover, .product-nav-thumbs a:focus,
+.product-nav-thumbs label.active, .product-nav-thumbs label:hover, .product-nav-thumbs label:focus,
 .product-nav-thumbs span.active,
 .product-nav-thumbs span:hover,
 .product-nav-thumbs span:focus {
     box-shadow: 0 0 0 0.1rem #cccccc;
 }
 
-.product-nav-thumbs a:last-child,
+.product-nav-thumbs label:last-child,
 .product-nav-thumbs span:last-child {
     margin-right: 0;
 }
@@ -13581,8 +13583,8 @@ small.form-text {
 }
 
 .select-custom::after {
-    font-family: "poppins";
-    content: '\f110';
+    font-family: "FontAwesome";
+    content: '\f078';
     position: absolute;
     display: inline-block;
     right: 1.9rem;
@@ -15844,6 +15846,9 @@ button:focus {
 .product-main-image img {
     max-width: none;
     width: 100%;
+}.product-main-image video {
+    max-width: none;
+    width: 100%;
 }
 
 .btn-product-gallery {
@@ -15894,6 +15899,10 @@ button:focus {
 }
 
 .product-gallery-item img {
+    max-width: none;
+    width: 100%;
+}
+.product-gallery-item video {
     max-width: none;
     width: 100%;
 }
@@ -16170,7 +16179,7 @@ button:focus {
     right: .9rem;
 }
 
-.details-filter-row label {
+.details-filter-row .title {
     display: inline-block;
     width: 67px;
     font-weight: 400;

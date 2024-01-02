@@ -28,6 +28,8 @@ class HomeView(TemplateView):
 
 
 from django.views import View
+
+
 class ShopView(View):
     template_name = 'store/pages/shop.html'
     filterset_class = ProductFilter
@@ -48,7 +50,6 @@ class ShopView(View):
 
         applied_category_filters = request.GET.getlist('category')  # Get selected category filters as a list
         applied_size_filters = request.GET.getlist('size')
-        print(request.GET.get('show'))
         if request.GET.get('show'):
             showing_products = int(request.GET.get('show'))
 
@@ -65,10 +66,26 @@ class ShopView(View):
             'applied_filters': {
                 'category': applied_category_filters,
                 'size': applied_size_filters,
-                'color':  request.GET.get('color'),
+                'color': request.GET.get('color'),
+                'order_by': request.GET.get('order_by')
             },
-            'showing_products':showing_products,
-            'total_products':total_products
+            'showing_products': showing_products,
+            'total_products': total_products
         }
         return render(request, self.template_name, context)
 
+
+class ProductView(View):
+    template_name = 'store/pages/product-details.html'
+    model = ProductModel
+
+    def get(self, request, *args, **kwargs):
+        uuid = kwargs.get('uuid')
+        product = ProductModel.objects.get(uuid=uuid)
+        related_products = ProductModel.objects.filter(category=product.category).exclude(uuid=product.uuid)
+        context = {
+            'product': product,
+            'related_products':related_products
+        }
+
+        return render(request, self.template_name, context)

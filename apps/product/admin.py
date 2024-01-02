@@ -123,7 +123,7 @@ class ProductModelAdmin(admin.ModelAdmin):
 
     def stock(self, obj):
         # Customize this method to generate the desired stock information
-        variants = obj.productvariantmodel_set.all()  # Assuming the related name is set to 'productvariantmodel_set'
+        variants = obj.product_variants.all()  # Assuming the related name is set to 'productvariantmodel_set'
         stock_info = "\n".join(f"({variant.size} - {variant.color}) - {variant.stock}" for variant in variants)
         return format_html(linebreaks(stock_info))
 

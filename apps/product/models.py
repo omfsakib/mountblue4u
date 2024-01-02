@@ -221,7 +221,8 @@ class ProductVideosModel(BaseModel):
         verbose_name=_("Product"),
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
+        related_name="product_videos"
     )
 
     video = models.FileField(

@@ -144,7 +144,8 @@ button::-moz-focus-inner {
   .mfp-close span {
     display: none; }
   .mfp-close:before {
-    content: '\f191'; }
+    font-family: FontAwesome;
+    content: '\f00d'; }
   .mfp-close:hover, .mfp-close:focus {
     opacity: 1; }
   .mfp-close:active {
@@ -218,12 +219,14 @@ button::-moz-focus-inner {
 .mfp-arrow-left {
   left: 0; }
   .mfp-arrow-left:before {
-    content: '\f111'; }
+    font-family: FontAwesome;
+    content: '\f104'; }
 
 .mfp-arrow-right {
   right: 0; }
   .mfp-arrow-right:before {
-    content: '\f112'; }
+    font-family: FontAwesome;
+    content: '\f105'; }
 
 .mfp-iframe-holder {
   padding-top: 40px;
