@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/shop-style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="page-header text-center" style="background-image: url('{% static 'images/header-bg.jpeg' %}')">
+        <div class="container-fluid">
+            <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+        </div><!-- End .container-fluid -->
+    </div>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
+    <div class="page-content">
+        {% if cartItems <= 0 %}
+            <p class="text-center">Your shopping cart is empty!</p><!-- End .product -->
+        {% else %}
+            <div class="cart">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table table-cart table-mobile">
+                                <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for item in items %}
+                                    <tr>
+                                        <td class="product-col">
+                                            <div class="product">
+                                                <figure class="product-media">
+                                                    <a href="{% url 'product-details' item.product.uuid %}">
+                                                        <img src="{{ item.product.product_images.first.image.url }}"
+                                                             alt="Product image">
+                                                    </a>
+                                                </figure>
+
+                                                <h3 class="product-title">
+                                                    <a href="{% url 'product-details' item.product.uuid %}">{{ item.product.title }}</a>
+                                                </h3><!-- End .product-title -->
+                                            </div><!-- End .product -->
+                                        </td>
+                                        <td class="price-col">&#2547; {{ item.product.price|floatformat:0 }}</td>
+                                        <td class="select-custom" style="padding-right: 20px">
+                                            <select name="order_by" class="form-control">
+                                                {% for variant in item.product.product_variants.all %}
+                                                    <option value="{{ variant.size.uuid }}"
+                                                            {% if variant.size.uuid|stringformat:"s" == item.size %}
+                                                            selected="selected" disabled {% endif %}  class="update-cart"
+                                                            data-product="{{ item.product.uuid }}" data-action="size"
+                                                            data-size="{{ variant.size.uuid }}">
+                                                        {{ variant.size.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td class="select-custom" style="padding-right: 20px">
+                                            <select name="order_by"
+                                                    class="form-control">
+                                                {% for variant in item.product.product_variants.all %}
+                                                    <option value="{{ variant.color.uuid }}" class="update-cart"
+                                                            data-product="{{ item.product.uuid }}" data-action="color"
+                                                            data-color="{{ variant.color.uuid }}"
+                                                            {% if variant.color.uuid|stringformat:"s" == item.color %}
+                                                            selected="selected" disabled{% endif %}>
+                                                        <span style="background: {{ variant.color.code }};">{{ variant.color.name }}</span>
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td class="quantity-col">
+                                            <div class="btn-group mr-2 w-25" role="group" aria-label="First group">
+                                                <button type="button" style="min-width: 20px" class="btn btn-outline-secondary update-cart" data-product="{{item.product.uuid}}" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                                <button type="button" style="min-width: 30px"  disabled class="btn btn-outline-secondary">{{ item.quantity }}</button>
+                                                <button type="button" style="min-width: 20px"  class="btn btn-outline-secondary update-cart" data-product="{{item.product.uuid}}" data-action="add"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                            </div>
+                                        </td>
+                                        <td class="total-col">&#2547; {{ item.total|floatformat:0 }}</td>
+                                        <td class="remove-col">
+                                            <button data-toggle="tooltip" title=""
+                                                    data-product="{{ item.product.uuid }}" data-action="delete"
+                                                    data-original-title="Remove" class="btn-remove update-cart"><i
+                                                    class="fa fa-close"></i></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table><!-- End .table table-wishlist -->
+
+                            <div class="cart-bottom">
+                                <div class="cart-discount">
+                                    <h3 class="summary-title">Cart Total - &#2547; {{ cartTotal|floatformat:0 }}</h3>
+                                    <a href="/checkout" class="btn btn-outline-dark-2"><span>PROCEED TO
+                                    CHECKOUT</span><i
+                                            class="fa fa-long-arrow-right"></i></a>
+                                </div><!-- End .cart-discount -->
+
+                                <a href="/shop" class="btn btn-outline-dark-2"><span>CONTINUE SHOPPING</span><i
+                                        class="fa fa-refresh"></i></a>
+                            </div><!-- End .cart-bottom -->
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .cart -->
+            </div>
+        {% endif %}
+{% endblock %}

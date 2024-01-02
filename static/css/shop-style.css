@@ -9301,7 +9301,6 @@ a:focus {
 
 .form-control {
   height: 40px;
-  padding: .85rem 2rem;
   font-size: 1.4rem;
   line-height: 1.5;
   font-weight: 300;
@@ -9309,7 +9308,6 @@ a:focus {
   background-color: #fafafa;
   border: 1px solid #ebebeb;
   border-radius: 0;
-  margin-bottom: 2rem;
   transition: all 0.3s;
   box-shadow: none; }
 
@@ -9382,9 +9380,6 @@ small.form-text {
 .select-custom {
   position: relative;
   margin-bottom: 1rem; }
-  .select-custom select {
-    -webkit-appearance: none;
-    appearance: none; }
   .select-custom .form-control,
   .select-custom .form-control-sm {
     padding-right: 4rem; }

@@ -1,3 +1,6 @@
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views import View
@@ -9,6 +12,7 @@ from apps.product.models import CategoryModel, ProductModel, SizeModel, ColorMod
 from apps.promotion.models import CampaignModel
 from apps.blog.models import BlogModel
 from apps.product.filters import ProductFilter
+from apps.sales.models import Order, OrderItem
 
 
 class HomeView(TemplateView):
@@ -89,3 +93,61 @@ class ProductView(View):
         }
 
         return render(request, self.template_name, context)
+
+
+class CartView(View):
+    template_name = 'store/pages/cart.html'
+
+    def get(self, request, *args, **kwargs):
+
+        context = {
+            'sizes': SizeModel.objects.filter(is_active=True),
+            'colors': ColorModel.objects.filter(is_active=True),
+        }
+        return render(request, self.template_name, context)
+
+def updateItem(request):
+    data = json.loads(request.body)
+    productId = data['productID']
+    action = data['action']
+    color = data['color']
+    size = data['size']
+    quantity = data['quantity']
+
+    customer = request.user
+    product = ProductModel.objects.get(uuid=productId)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+    if size and color != "undefined":
+        orderItem.color = color
+        orderItem.size = size
+
+    if quantity == 'undefined':
+        quantity = 1
+
+    orderItem.price = product.price
+
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + int(quantity))
+
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+
+    elif action == 'delete':
+        orderItem.quantity = 0
+
+    elif action == 'color':
+        orderItem.color = color
+
+    elif action == 'size':
+        orderItem.size = size
+
+    orderItem.total = (orderItem.quantity * product.price)
+
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse('Item was added', safe=False)
