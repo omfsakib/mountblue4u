@@ -237,7 +237,17 @@ $(document).ready(function () {
     }
 
     // Quantity Input - Cart page - Product Details pages
-
+    function quantityInputs() {
+        if ($.fn.inputSpinner) {
+            $("input[type='number']").inputSpinner({
+                decrementButton: '<i class="fa fa-minus"></i>',
+                incrementButton: '<i class="fa fa-plus"></i>',
+                groupClass: 'input-spinner',
+                buttonsClass: 'btn-spinner update-cart',
+                buttonsWidth: '26px'
+            });
+        }
+    }
 
     // Sticky Content - Sidebar - Social Icons etc..
     // Wrap elements with <div class="sticky-content"></div> if you want to make it sticky
