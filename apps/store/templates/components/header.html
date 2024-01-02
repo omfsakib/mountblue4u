@@ -17,7 +17,7 @@
                                               fill="#555753"></path>
                                     </g>
                                 </svg>
-                                Call: {{preference.phone}}</a>
+                                Call: {{ preference.phone }}</a>
                             </li>
                         </ul>
                     </li>
@@ -26,7 +26,7 @@
 
             <div class="header-right d-flex justify-content-center align-content-center">
                 <div class="social-icons social-icons-color mr-2">
-                    <a href="{{preference.facebook}}" class="social-icon social-facebook mr-3" title="Facebook"
+                    <a href="{{ preference.facebook }}" class="social-icon social-facebook mr-3" title="Facebook"
                        target="_blank">
                         <svg width="15" height="15" viewBox="-5 0 20 20" version="1.1"
                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -48,7 +48,7 @@
                             </g>
                         </svg>
                     </a>
-                    <a href="{{preference.whatsapp}}" class="social-icon social-whatsapp" title="Whats App"
+                    <a href="{{ preference.whatsapp }}" class="social-icon social-whatsapp" title="Whats App"
                        target="_blank">
                         <svg fill="#555753" height="15" width="15" version="1.1" id="Icons"
                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -99,15 +99,15 @@
                 </button>
 
                 <a href="/" class="logo">
-                    <img src="{{preference.logo.url}}" alt="Mount Blue" width="105" height="25">
+                    <img src="{{ preference.logo.url }}" alt="Mount Blue" width="105" height="25">
                 </a>
 
                 <nav class="main-nav">
                     <ul class="menu sf-arrows">
                         {% for menu in main_menu %}
-                        <li>
-                            <a href="{{menu.url_path}}">{{menu.name}}</a>
-                        </li>
+                            <li>
+                                <a href="{{ menu.url_path }}">{{ menu.name }}</a>
+                            </li>
                         {% endfor %}
                     </ul><!-- End .menu -->
                 </nav><!-- End .main-nav -->
@@ -194,48 +194,53 @@
                                       stroke="#555753" stroke-width="1.5" stroke-linecap="round"></path>
                             </g>
                         </svg>
-                        <span class="cart-count" style="margin-left: -6px; margin-top: -20px">{{cartItems}}</span>
+                        <span class="cart-count" style="margin-left: -6px; margin-top: -20px">{{ cartItems }}</span>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <div class="dropdown-cart-products">
-                            {% if cartItems <= 0 %}
-                            Your shopping cart is empty!<!-- End .product -->
-                            {% endif %}
-                            {% for item in items %}
-                            <div class="product">
-                                <div class="product-cart-details">
-                                    <h4 class="product-title">
-                                        <a href="{% url 'product-details' item.product.uuid %}">{{item.product.title}}</a>
-                                    </h4>
+                        {% if cartItems <= 0 %}
+                            <p class="text-center">Your shopping cart is empty!</p>
+                        {% else %}
+                            <div class="dropdown-cart-products">
+                                <!-- End .product -->
+                                {% for item in items %}
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="{% url 'product-details' item.product.uuid %}">{{ item.product.title }}</a>
+                                            </h4>
 
-                                    <span class="cart-product-info">
-                                                <span class="cart-product-qty">{{item.quantity}}</span>
-                                                x &#2547; {{item.product.price|floatformat:0}}
+                                            <span class="cart-product-info">
+                                                <span class="cart-product-qty">{{ item.quantity }}</span>
+                                                x &#2547; {{ item.product.price|floatformat:0 }}
                                             </span>
-                                </div><!-- End .product-cart-details -->
+                                        </div><!-- End .product-cart-details -->
 
-                                <figure class="product-image-container">
-                                    <a href="{% url 'product-details' item.product.uuid %}" class="product-image">
-                                        <img src="{{item.product.product_images.first.image.url}}" alt="product">
-                                    </a>
-                                </figure>
-                                <button type="button" data-product="{{item.product.uuid}}" data-action="delete" title="Remove"  class="btn-remove update-cart" title="Remove Product"><i class="fa fa-close"></i></button>
-                            </div>
-                            {% endfor %}
-                        </div><!-- End .cart-product -->
+                                        <figure class="product-image-container">
+                                            <a href="{% url 'product-details' item.product.uuid %}"
+                                               class="product-image">
+                                                <img src="{{ item.product.product_images.first.image.url }}"
+                                                     alt="product">
+                                            </a>
+                                        </figure>
+                                        <button type="button" data-product="{{ item.product.uuid }}"
+                                                data-action="delete" title="Remove" class="btn-remove update-cart"
+                                                title="Remove Product"><i class="fa fa-close"></i></button>
+                                    </div>
+                                {% endfor %}
+                            </div><!-- End .cart-product -->
 
-                        <div class="dropdown-cart-total">
-                            <span>Total</span>
+                            <div class="dropdown-cart-total">
+                                <span>Total</span>
 
-                            <span class="cart-total-price">&#2547; {{cartTotal|floatformat:0}}</span>
-                        </div><!-- End .dropdown-cart-total -->
+                                <span class="cart-total-price">&#2547; {{ cartTotal|floatformat:0 }}</span>
+                            </div><!-- End .dropdown-cart-total -->
 
-                        <div class="dropdown-cart-action">
-                            <a href="cart.html" class="btn btn-primary">View Cart</a>
-                            <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i
-                                    class="fa fa-long-arrow-right"></i></a>
-                        </div><!-- End .dropdown-cart-total -->
+                            <div class="dropdown-cart-action">
+                                <a href="/cart" class="btn btn-primary">View Cart</a>
+                                <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i
+                                        class="fa fa-long-arrow-right"></i></a>
+                            </div>{% endif %}<!-- End .dropdown-cart-total -->
                     </div><!-- End .dropdown-menu -->
                 </div><!-- End .cart-dropdown -->
             </div><!-- End .header-right -->

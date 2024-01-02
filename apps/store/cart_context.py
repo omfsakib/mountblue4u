@@ -2,6 +2,7 @@ import json
 
 from apps.product.models import ProductModel
 from apps.promotion.models import CouponModel
+from apps.sales.models import Order
 
 
 def cookieCart(request):
@@ -60,7 +61,7 @@ def cookieCart(request):
             item = {
                 'product': product,
                 'quantity': cart[i]["quantity"],
-                'get_total': total,
+                'total': total,
                 'color': color,
                 'size': size,
                 'first_size': first_size
@@ -76,10 +77,16 @@ def cookieCart(request):
 
 
 def get_cart(request):
-    cookieData = cookieCart(request)
-    cartItems = cookieData['cartItems']
-    cartTotal = cookieData['cartTotal']
-    order = cookieData['order']
-    items = cookieData['items']
+    if request.user.is_authenticated:
+        order, created = Order.objects.get_or_create(customer= request.user, complete=False)
+        cartItems = order.get_cart_items
+        cartTotal = order.get_cart_total
+        items = order.order_products.all()
+    else:
+        cookieData = cookieCart(request)
+        cartItems = cookieData['cartItems']
+        cartTotal = cookieData['cartTotal']
+        order = cookieData['order']
+        items = cookieData['items']
 
     return {"order": order, "items": items, "cartTotal": cartTotal, 'cartItems':cartItems}
