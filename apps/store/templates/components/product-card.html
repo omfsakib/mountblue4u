@@ -7,7 +7,7 @@
         <span class="product-label label-new">New</span>
         {% else %}
         {% endif %}
-        <a href="#">
+        <a href="{% url 'product-details' product.uuid %}">
             <img src="{{product.product_images.first.image.url}}" alt="Product image"
                  class="product-image">
             <img src="{{product.product_images.all.1.image.url}}" alt="Product image"
@@ -29,7 +29,7 @@
         <div class="product-cat">
             <a href="#">{{product.category.name}}</a>
         </div><!-- End .product-cat -->
-        <h3 class="product-title"><a href="#">{{product.title}}</a></h3>
+        <h3 class="product-title"><a href="{% url 'product-details' product.uuid %}">{{product.title}}</a></h3>
         <!-- End .product-title -->
         <div class="product-price">
             <span class="new-price">&#2547; {{product.price|floatformat:0}}</span>
