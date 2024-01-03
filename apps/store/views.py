@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from apps.preference.models import BannerModel, TopTendingProductsModel
 from apps.product.models import CategoryModel, ProductModel, SizeModel, ColorModel
-from apps.promotion.models import CampaignModel
+from apps.promotion.models import CampaignModel, DeliveryChargeModel
 from apps.blog.models import BlogModel
 from apps.product.filters import ProductFilter
 from apps.sales.models import Order, OrderItem
@@ -89,7 +89,7 @@ class ProductView(View):
         related_products = ProductModel.objects.filter(category=product.category).exclude(uuid=product.uuid)
         context = {
             'product': product,
-            'related_products':related_products
+            'related_products': related_products
         }
 
         return render(request, self.template_name, context)
@@ -99,12 +99,19 @@ class CartView(View):
     template_name = 'store/pages/cart.html'
 
     def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
 
+
+class CheckoutView(View):
+    template_name = 'store/pages/checkout.html'
+
+    def get(self, request, *args, **kwargs):
         context = {
-            'sizes': SizeModel.objects.filter(is_active=True),
-            'colors': ColorModel.objects.filter(is_active=True),
+            'delivery_charge': DeliveryChargeModel.objects.last()
         }
         return render(request, self.template_name, context)
+
 
 def updateItem(request):
     data = json.loads(request.body)
