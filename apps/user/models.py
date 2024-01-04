@@ -15,6 +15,11 @@ class User(AbstractUser):
         null=True,
         max_length=15
     )
+    email = models.EmailField(
+        verbose_name=_("Email"),
+        blank=True,
+        null=True
+    )
     avatar = models.ImageField(
         verbose_name=_("Avatar"), upload_to="avatar/", null=True, blank=True
     )
@@ -27,7 +32,7 @@ class User(AbstractUser):
         db_index=True,
         max_length=35,
         choices=ROLE_CHOICES,
-        default="user",
+        default="customer",
     )
     objects = UserManager()
     REQUIRED_FIELDS = ["name"]
@@ -39,4 +44,4 @@ class User(AbstractUser):
         ordering = ["name"]
 
     def __str__(self):
-        return self.phone
+        return self.username
