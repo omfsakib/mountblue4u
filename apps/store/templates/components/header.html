@@ -107,7 +107,8 @@
                 </button>
 
                 <a href="/" class="logo">
-                    <img src="{{ preference.logo.url }}" alt="Mount Blue" width="105" height="25">
+                    <img src="{% if preference.logo %}{{ preference.logo.url }}{% else %}#{% endif %}" alt="Mount Blue"
+                         width="105" height="25">
                 </a>
 
                 <nav class="main-nav">
@@ -166,22 +167,23 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <ul class="compare-products">
-                            <li class="compare-product">
-                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                <h4 class="compare-product-title"><a href="product.html">Blue Night Dress</a></h4>
-                            </li>
-                            <li class="compare-product">
-                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                <h4 class="compare-product-title"><a href="product.html">White Long Skirt</a></h4>
-                            </li>
-                        </ul>
-
-                        <div class="compare-actions">
-                            <a href="#" class="action-link">Clear All</a>
-                            <a href="#" class="btn btn-outline-primary-2"><span>Compare</span><i
-                                    class="icon-long-arrow-right"></i></a>
-                        </div>
+{#                        <ul class="compare-products">#}
+{#                            <li class="compare-product">#}
+{#                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>#}
+{#                                <h4 class="compare-product-title"><a href="product.html">Blue Night Dress</a></h4>#}
+{#                            </li>#}
+{#                            <li class="compare-product">#}
+{#                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>#}
+{#                                <h4 class="compare-product-title"><a href="product.html">White Long Skirt</a></h4>#}
+{#                            </li>#}
+{#                        </ul>#}
+{##}
+{#                        <div class="compare-actions">#}
+{#                            <a href="#" class="action-link">Clear All</a>#}
+{#                            <a href="#" class="btn btn-outline-primary-2"><span>Compare</span><i#}
+{#                                    class="icon-long-arrow-right"></i></a>#}
+{#                        </div>#}
+                            <p class="text-center">Your compare is empty!</p>
                     </div><!-- End .dropdown-menu -->
                 </div><!-- End .compare-dropdown -->
 
