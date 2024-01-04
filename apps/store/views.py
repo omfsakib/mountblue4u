@@ -25,7 +25,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = {
             'banners': BannerModel.objects.filter(is_active=True),
-            'top_trending_products': TopTendingProductsModel.objects.last().products.all()[:8],
+            'top_trending_products': TopTendingProductsModel.objects.last().products.all()[:8] if TopTendingProductsModel.objects.last() else [],
             'featured_categorys': CategoryModel.objects.filter(is_active=True, is_featured=True),
             'new_arrivals': ProductModel.objects.filter(is_active=True).order_by('-created_at')[:8],
             'campaigns': CampaignModel.objects.filter(is_active=True).order_by('-created_at')[:2],
