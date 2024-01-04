@@ -6,6 +6,7 @@ from django.urls import reverse, path
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
 
+from apps.product.models import SizeModel, ColorModel
 from apps.sales.models import Order, OrderItem
 from apps.user.models import User
 
@@ -49,19 +50,31 @@ class CustomOrderForm(forms.ModelForm):
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    extra = 1
-    readonly_fields = ['product', 'quantity', 'price', 'total', 'size', 'color']
-    exclude = ['created_by', 'updated_by', 'is_active']
+    extra = 0
+    readonly_fields = ['product', 'quantity', 'price', 'total', 'order_size', 'order_color']
+    exclude = ['created_by', 'updated_by', 'is_active', 'size', 'color']
+
+    def order_size(self, instance):
+        return SizeModel.objects.get(uuid=instance.size) if instance.size else ''
+
+    def order_color(self, instance):
+        return ColorModel.objects.get(uuid=instance.color) if instance.color else ''
 
 
 @admin.register(Order)
 class CustomOrderAdmin(admin.ModelAdmin):
     form = CustomOrderForm
     list_display = (
-    'uuid_last_5_digits', 'customer', 'status', 'total', 'due', 'advance', 'created_at', 'invoice_button')
+        'uuid_last_5_digits', 'customer', 'status', 'total', 'due', 'advance', 'created_at', 'invoice_button')
     search_fields = ['uuid', 'customer__phone', 'status']
     inlines = [OrderItemInline]
     list_filter = ['status', PriceRangeFilter, 'created_at']
+
+    def get_queryset(self, request):
+        # Fetch the default queryset
+        queryset = super().get_queryset(request)
+        # Exclude orders where complete is False
+        return queryset.exclude(complete=False)
 
     def uuid_last_5_digits(self, obj):
         return str(obj.uuid)[-5:]

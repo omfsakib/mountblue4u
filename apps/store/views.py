@@ -109,7 +109,8 @@ class CheckoutView(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'delivery_charge': DeliveryChargeModel.objects.last()
+            'delivery_charge': DeliveryChargeModel.objects.last(),
+            'last_order': Order.objects.filter(customer=request.user, complete=True).last()
         }
         return render(request, self.template_name, context)
 
