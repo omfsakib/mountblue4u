@@ -212,7 +212,7 @@ class OrderItem(BaseModel):
     )
 
     def __str__(self):
-        return self.product.name
+        return str(self.uuid)[:5]
 
     @property
     def get_total(self):

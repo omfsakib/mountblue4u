@@ -1,11 +1,13 @@
 import json
 
+from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.views import View
 from django.db.models import Min, Max
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views import View
 
 from apps.preference.models import BannerModel, TopTendingProductsModel
 from apps.product.models import CategoryModel, ProductModel, SizeModel, ColorModel
@@ -13,6 +15,8 @@ from apps.promotion.models import CampaignModel, DeliveryChargeModel
 from apps.blog.models import BlogModel
 from apps.product.filters import ProductFilter
 from apps.sales.models import Order, OrderItem
+from apps.store.cart_context import cookieCart
+from apps.user.models import User
 
 
 class HomeView(TemplateView):
@@ -29,9 +33,6 @@ class HomeView(TemplateView):
         }
 
         return context
-
-
-from django.views import View
 
 
 class ShopView(View):
@@ -109,6 +110,65 @@ class CheckoutView(View):
     def get(self, request, *args, **kwargs):
         context = {
             'delivery_charge': DeliveryChargeModel.objects.last()
+        }
+        return render(request, self.template_name, context)
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        # Retrieve form data
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        email = request.POST.get('email')
+        notes = request.POST.get('notes')
+        delivery_object = DeliveryChargeModel.objects.last()
+        if city.lower() == 'dhaka':
+            delivery_charge = delivery_object.inside_fee
+        else:
+            delivery_charge = delivery_object.outside_fee
+
+        user, created = User.objects.get_or_create(username=phone, phone=phone)
+        user.email = email
+        user.name = name
+        user.save()
+
+        order, created = Order.objects.get_or_create(customer=user, complete=False)
+        order.status = Order.OrderStatus.customer_confirmed
+        order.address = address
+        order.notes = notes
+        order.city = city
+
+        if request.user.is_authenticated:
+            cartTotal = order.get_cart_total
+        else:
+            cookieData = cookieCart(request)
+            cartTotal = cookieData['cartTotal']
+            items = cookieData['items']
+            for item in items:
+                product = ProductModel.objects.get(uuid=item['product'].uuid)
+                size = SizeModel.objects.get(uuid=item['size'])
+                color = ColorModel.objects.get(uuid=item['color'])
+                OrderItem.objects.get_or_create(order=order, product=product,
+                                                quantity=item['quantity'],
+                                                price=product.price, total=item['total'],
+                                                color=color.name,
+                                                size=size.name)
+
+        order.total = int(cartTotal) + int(delivery_charge)
+        order.complete = True
+        order.save()
+        login(request, user)
+
+        return redirect('home')
+
+
+class MyAccountView(LoginRequiredMixin, View):
+    template_name = 'store/pages/myaccount.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'orders': Order.objects.filter(complete=True),
         }
         return render(request, self.template_name, context)
 

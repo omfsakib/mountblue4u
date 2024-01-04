@@ -215,7 +215,7 @@
   font-size: 1.6rem;
   line-height: 1.625; }
   .deal-content h4 {
-    color: #cc9966;
+    color: #776c61;
     font-weight: 400;
     font-size: 1.6rem;
     line-height: 1.3;
@@ -286,7 +286,7 @@
     text-overflow: ellipsis; }
   .deal-countdown .countdown-amount {
     display: inline-block;
-    color: #cc9966;
+    color: #776c61;
     font-weight: 400;
     font-size: 2.4rem;
     letter-spacing: -.025em;
@@ -365,7 +365,7 @@
   margin-bottom: 3.5rem; }
 
 .icon-box-icon {
-  color: #cc9966;
+  color: #776c61;
   font-size: 3.4rem;
   margin-bottom: 1.2rem; }
 
@@ -379,7 +379,7 @@
   font-size: 1.3rem; }
 
 .primary-color {
-  color: #cc9966; }
+  color: #776c61; }
 
 .cta-box {
   color: #777;
@@ -444,7 +444,7 @@
     font-weight: 400;
     color: #777; }
     .blog-posts .read-more:hover, .blog-posts .read-more:focus {
-      color: #cc9966; }
+      color: #776c61; }
 
 .read-more {
   font-size: 1.5rem;
@@ -470,7 +470,7 @@
     line-height: 2em;
     margin-bottom: 1.8rem; }
   .footer .widget-about-info a {
-    color: #cc9966; }
+    color: #776c61; }
   .footer .widget-title {
     text-transform: uppercase;
     font-size: 1.5rem;
