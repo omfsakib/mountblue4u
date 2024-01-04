@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{preference.site_name}}</title>
+    <title>{{ preference.site_name }}</title>
     <meta name="keywords" content="Mount Blue">
     <meta name="description" content="Mount Blue - eCommerce">
     <meta name="author" content="mount-blue">
@@ -73,11 +73,8 @@
 
         if (cart == undefined) {
             cart = {}
-            console.log("Cart was created")
             document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
         }
-
-        console.log('Cart:', cart)
 
     </script>
 
@@ -142,6 +139,11 @@
         })
     }
 
+    function clearCart() {
+        cart = {};
+        document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
+    }
+
     function addCookieItem(productID, action, color, size, quantity) {
 
         if (action == 'add') {
@@ -167,7 +169,6 @@
         if (action == 'size') {
             cart[productID]['size'] = size
         }
-        console.log(cart)
         document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
         location.reload()
     }
