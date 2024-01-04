@@ -6,7 +6,7 @@
             <div class="row">
                 {% for category in featured_categorys %}
                     <div class="col-6 col-md-4 col-lg-3 pb-4">
-                    <a href="#" class="d-flex flex-column justify-content-start">
+                    <a href="/shop?category={{ category.uuid }}" class="d-flex flex-column justify-content-start">
                         <div class="feature_image zoom-on-hover">
                             <img src="{{category.image.url}}" height="300" width="300" alt="">
                         </div>
