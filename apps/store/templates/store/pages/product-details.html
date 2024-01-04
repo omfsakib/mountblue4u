@@ -2,256 +2,268 @@
 {% load static %}
 
 {% block meta %}
-<!-- Facebook Open Graph -->
-<meta property="og:title" content="{{product.title}}">
-<meta property="og:description" content="{{product.description|truncatechars_html:200|safe}}">
-<meta property="og:image" content="{{product.product_images.first.image.url}}">
-<meta property="og:url" content="{{request.build_absolute_uri}}">
-<meta property="og:type" content="product">
-<meta property="og:site_name" content="Mount Blue">
+    <!-- Facebook Open Graph -->
+    <meta property="og:title" content="{{ product.title }}">
+    <meta property="og:description" content="{{ product.description|truncatechars_html:200|safe }}">
+    <meta property="og:image" content="{{ product.product_images.first.image.url }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="Mount Blue">
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{product.title}}">
-<meta name="twitter:description" content="{{product.description|truncatechars_html:200|safe}}">
-<meta name="twitter:image" content="{{product.product_images.first.image.url}}">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ product.title }}">
+    <meta name="twitter:description" content="{{ product.description|truncatechars_html:200|safe }}">
+    <meta name="twitter:image" content="{{ product.product_images.first.image.url }}">
 
-<!-- WhatsApp -->
-<meta property="og:see_also"
-      content="whatsapp://send?text={{product.title}} - {{product.description|truncatechars_html:200|safe}} {{request.build_absolute_uri}}">
+    <!-- WhatsApp -->
+    <meta property="og:see_also"
+          content="whatsapp://send?text={{ product.title }} - {{ product.description|truncatechars_html:200|safe }} {{ request.build_absolute_uri }}">
 
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-    <div class="container-fluid">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Product-Details</li>
-        </ol>
-    </div><!-- End .container-fluid -->
-</nav>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Product-Details</li>
+            </ol>
+        </div><!-- End .container-fluid -->
+    </nav>
 
-<div class="page-content">
-    <div class="container">
-        <div class="product-details-top">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="product-gallery product-gallery-vertical">
-                        <div class="row">
-                            <figure class="product-main-image" id="product-main-figure">
-                                <img id="product-zoom" src="{{product.product_images.first.image.url}}"
-                                     alt="product image">
-                                <a href="#" id="btn-product-gallery" class="btn-product-gallery">
-                                    <i class="fa fa-arrows-alt" aria-hidden="true"></i> </a>
-                            </figure><!-- End .product-main-image -->
+    <div class="page-content">
+        <div class="container">
+            <div class="product-details-top">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="product-gallery product-gallery-vertical">
+                            <div class="row">
+                                <figure class="product-main-image" id="product-main-figure">
+                                    <img id="product-zoom" src="{{ product.product_images.first.image.url }}"
+                                         alt="product image">
+                                    <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i> </a>
+                                </figure><!-- End .product-main-image -->
 
-                            <div id="product-zoom-gallery" class="product-image-gallery">
-                                {% for video in product.product_videos.all %}
-                                <a class="product-gallery-item" href="#" data-type="video"
-                                   data-url="{{video.video.url}}" data-image="None">
-                                    <video src="{{video.video.url}}"></video>
-                                </a>
-                                {% endfor %}
-                                {% for image in product.product_images.all %}
-                                <a class="product-gallery-item {% if forloop.first %}active{% endif %}" href="#" data-type="image"
-                                   data-url="{{image.image.url}}" data-image="{{image.image.url}}">
-                                    <img src="{{image.image.url}}" alt="product side">
-                                </a>
-                                {% endfor %}
-
-                            </div>
-                            <!-- End .product-image-gallery -->
-                        </div><!-- End .row -->
-                    </div><!-- End .product-gallery -->
-                </div><!-- End .col-md-6 -->
-
-                <div class="col-md-6">
-                    <div class="product-details">
-                        <h1 class="product-title">{{product.title}}</h1><!-- End .product-title -->
-
-                        <div class="ratings-container">
-                            <div class="ratings">
-                                <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                            </div><!-- End .ratings -->
-                            <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
-                        </div><!-- End .rating-container -->
-
-                        <div class="product-price">
-                            &#2547; {{product.price|floatformat:0}}
-                        </div><!-- End .product-price -->
-
-                        <div class="product-content">
-                            <p>{{product.description|truncatechars_html:200|safe}} </p>
-                        </div><!-- End .product-content -->
-
-                        <div class="details-filter-row details-row-size">
-                            <label class="title">Color:</label>
-
-                            <div class="product-nav product-nav-thumbs">
-                                {% for product in product.product_variants.all %}
-                                <input type="checkbox" style="display: none" id="color-{{product.color.uuid}}"
-                                       name="color" value="{{product.color.uuid}}">
-                                <label class="active" style="background: {{product.color.code}};">
-                                </label>
-
-                                {% endfor %}
-
-                                {% for product in product.product_variants.all %}
-                                <label for="color-{{product.color.uuid}}"><span
-                                        class="sr-only">{{product.color.name}}</span></label>
-                                {% endfor %}
-                            </div><!-- End .product-nav -->
-                        </div><!-- End .details-filter-row -->
-
-                        <div class="details-filter-row details-row-size">
-                            <label for="size">Size:</label>
-                            <div class="select-custom">
-                                <select name="size" id="size" class="form-control">
-                                    {% for product in product.product_variants.all %}
-                                    <option value="#" selected="selected">Select a size</option>
-                                    <option value="{{product.size.uuid}}">{{product.size.name}}</option>
+                                <div id="product-zoom-gallery" class="product-image-gallery">
+                                    {% for video in product.product_videos.all %}
+                                        <a class="product-gallery-item" href="#" data-type="video"
+                                           data-url="{{ video.video.url }}" data-image="None">
+                                            <video src="{{ video.video.url }}"></video>
+                                        </a>
                                     {% endfor %}
-                                </select>
-                            </div><!-- End .select-custom -->
-                        </div><!-- End .details-filter-row -->
+                                    {% for image in product.product_images.all %}
+                                        <a class="product-gallery-item {% if forloop.first %}active{% endif %}" href="#"
+                                           data-type="image"
+                                           data-url="{{ image.image.url }}" data-image="{{ image.image.url }}">
+                                            <img src="{{ image.image.url }}" alt="product side">
+                                        </a>
+                                    {% endfor %}
 
-                        <div class="details-filter-row details-row-size">
-                            <label for="qty">Qty:</label>
-                            <div class="product-details-quantity">
-                                <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1"
-                                       data-decimals="0" required="" style="display: none;">
-
-                            </div><!-- End .product-details-quantity -->
-                        </div><!-- End .details-filter-row -->
-
-                        <div class="product-details-action">
-                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-
-                            <div class="details-action-wrapper">
-                                <a href="#" class="btn-product btn-wishlist"
-                                   title="Wishlist"><span>Add to Wishlist</span></a>
-                                <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a>
-                            </div><!-- End .details-action-wrapper -->
-                        </div><!-- End .product-details-action -->
-
-                        <div class="product-details-footer">
-                            <div class="product-cat">
-                                <span>Category:</span>
-                                <a href="#">{{product.category.name}}</a>
-                            </div><!-- End .product-cat -->
-
-                            <div class="social-icons social-icons-sm">
-                                <span class="social-label">Share:</span>
-                                <a href="#" class="social-icon" title="Facebook" target="_blank"><i
-                                        class="fa fa-facebook"></i></a>
-                                <a href="#" class="social-icon" title="Twitter" target="_blank"><i
-                                        class="fa fa-twitter"></i></a>
-                                <a href="#" class="social-icon" title="Instagram" target="_blank"><i
-                                        class="fa fa-instagram"></i></a>
-                                <a href="#" class="social-icon" title="Whatsapp" target="_blank"><i
-                                        class="fa fa-whatsapp"></i></a>
-                            </div>
-                        </div><!-- End .product-details-footer -->
-                    </div><!-- End .product-details -->
-                </div><!-- End .col-md-6 -->
-            </div><!-- End .row -->
-        </div><!-- End .product-details-top -->
-
-        <div class="product-details-tab">
-            <ul class="nav nav-pills justify-content-center" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
-                       role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab"
-                       aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
-                     aria-labelledby="product-desc-link">
-                    <div class="product-desc-content">
-                        <h3>Product Information</h3>
-                        <p>{{product.description|safe}} </p>
-                    </div><!-- End .product-desc-content -->
-                </div><!-- .End .tab-pane -->
-                <div class="tab-pane fade" id="product-review-tab" role="tabpanel"
-                     aria-labelledby="product-review-link">
-                    <div class="reviews">
-                        <h3>Reviews (2)</h3>
-                        <div class="review">
-                            <div class="row no-gutters">
-                                <div class="col-auto">
-                                    <h4><a href="#">Samanta J.</a></h4>
-                                    <div class="ratings-container">
-                                        <div class="ratings">
-                                            <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                        </div><!-- End .ratings -->
-                                    </div><!-- End .rating-container -->
-                                    <span class="review-date">6 days ago</span>
-                                </div><!-- End .col -->
-                                <div class="col">
-                                    <h4>Good, perfect size</h4>
-
-                                    <div class="review-content">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores
-                                            assumenda asperiores facilis porro reprehenderit animi culpa atque
-                                            blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit
-                                            beatae quae voluptas!</p>
-                                    </div><!-- End .review-content -->
-
-                                    <div class="review-action">
-                                        <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
-                                        <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                    </div><!-- End .review-action -->
-                                </div><!-- End .col-auto -->
+                                </div>
+                                <!-- End .product-image-gallery -->
                             </div><!-- End .row -->
-                        </div><!-- End .review -->
+                        </div><!-- End .product-gallery -->
+                    </div><!-- End .col-md-6 -->
 
-                        <div class="review">
-                            <div class="row no-gutters">
-                                <div class="col-auto">
-                                    <h4><a href="#">John Doe</a></h4>
-                                    <div class="ratings-container">
-                                        <div class="ratings">
-                                            <div class="ratings-val" style="width: 100%;"></div>
-                                            <!-- End .ratings-val -->
-                                        </div><!-- End .ratings -->
-                                    </div><!-- End .rating-container -->
-                                    <span class="review-date">5 days ago</span>
-                                </div><!-- End .col -->
-                                <div class="col">
-                                    <h4>Very good</h4>
+                    <div class="col-md-6">
+                        <div class="product-details">
+                            <h1 class="product-title">{{ product.title }}</h1><!-- End .product-title -->
 
-                                    <div class="review-content">
-                                        <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis
-                                            laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas
-                                            iure illum repellendus, blanditiis perspiciatis beatae!</p>
-                                    </div><!-- End .review-content -->
+                            <div class="ratings-container">
+                                <div class="ratings">
+                                    <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                </div><!-- End .ratings -->
+                                <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+                            </div><!-- End .rating-container -->
 
-                                    <div class="review-action">
-                                        <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
-                                        <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                    </div><!-- End .review-action -->
-                                </div><!-- End .col-auto -->
-                            </div><!-- End .row -->
-                        </div><!-- End .review -->
-                    </div><!-- End .reviews -->
-                </div><!-- .End .tab-pane -->
-            </div><!-- End .tab-content -->
-        </div><!-- End .product-details-tab -->
+                            <div class="product-price">
+                                &#2547; {{ product.price|floatformat:0 }}
+                            </div><!-- End .product-price -->
 
-        {% if related_products|length > 0 %}
-        <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
+                            <div class="product-content">
+                                <p>{{ product.description|truncatechars_html:200|safe }} </p>
+                            </div><!-- End .product-content -->
 
-        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
-             data-toggle="owl" data-owl-options="{
+                            <div class="details-filter-row details-row-size">
+                                <label class="title">Color:</label>
+
+                                <div class="product-nav product-nav-thumbs">
+                                    {% for product in product.product_variants.all %}
+                                        <input type="checkbox" style="display: none" id="color-{{ product.color.uuid }}"
+                                               name="color" value="{{ product.color.uuid }}">
+                                        <label class="" for="color-{{ product.color.uuid }}"
+                                               onclick="selectColor('{{ product.color.uuid }}')"
+                                               id="color-label-{{ product.color.uuid }}"
+                                               style="background: {{ product.color.code }};">
+                                        </label>
+
+                                    {% endfor %}
+
+                                </div><!-- End .product-nav -->
+                            </div><!-- End .details-filter-row -->
+
+                            <div class="details-filter-row details-row-size">
+                                <label for="size">Size:</label>
+                                <div class="select-custom">
+                                    <select name="size" id="size" class="form-control">
+                                        <option value="#" selected="selected">Select a size</option>
+                                        {% for product in product.product_variants.all %}
+                                            <option onclick="selectSize('{{ product.size.uuid }}')"
+                                                    value="{{ product.size.uuid }}">{{ product.size.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div><!-- End .select-custom -->
+                            </div><!-- End .details-filter-row -->
+
+                            <div class="details-filter-row details-row-size">
+                                <label for="qty">Qty:</label>
+                                <div class="product-details-quantity">
+                                    <input type="number" id="qty" class="form-control" value="1" min="1" max="10"
+                                           step="1"
+                                           data-decimals="0" required="" onchange="selectQty(this.value)">
+
+                                </div><!-- End .product-details-quantity -->
+                            </div><!-- End .details-filter-row -->
+
+                            <div class="product-details-action">
+                                <a href="#" id="cart-update-duplicate"
+                                   class="btn-product btn-cart"><span>add to cart</span></a>
+                                <a href="#" id="cart-update" data-product="{{ product.uuid }}" data-action="add"
+                                   data-quantity="1"
+                                   class="btn-product btn-cart update-cart"><span>add to cart</span></a>
+
+                                <div class="details-action-wrapper">
+                                    <a href="#" class="btn-product btn-wishlist"
+                                       title="Wishlist"><span>Add to Wishlist</span></a>
+                                    <a href="#" class="btn-product btn-compare"
+                                       title="Compare"><span>Add to Compare</span></a>
+                                </div><!-- End .details-action-wrapper -->
+                            </div><!-- End .product-details-action -->
+
+                            <div class="product-details-footer">
+                                <div class="product-cat">
+                                    <span>Category:</span>
+                                    <a href="#">{{ product.category.name }}</a>
+                                </div><!-- End .product-cat -->
+
+                                <div class="social-icons social-icons-sm">
+                                    <span class="social-label">Share:</span>
+                                    <a href="#" class="social-icon" title="Facebook" target="_blank"><i
+                                            class="fa fa-facebook"></i></a>
+                                    <a href="#" class="social-icon" title="Twitter" target="_blank"><i
+                                            class="fa fa-twitter"></i></a>
+                                    <a href="#" class="social-icon" title="Instagram" target="_blank"><i
+                                            class="fa fa-instagram"></i></a>
+                                    <a href="#" class="social-icon" title="Whatsapp" target="_blank"><i
+                                            class="fa fa-whatsapp"></i></a>
+                                </div>
+                            </div><!-- End .product-details-footer -->
+                        </div><!-- End .product-details -->
+                    </div><!-- End .col-md-6 -->
+                </div><!-- End .row -->
+            </div><!-- End .product-details-top -->
+
+            <div class="product-details-tab">
+                <ul class="nav nav-pills justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
+                           role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab"
+                           role="tab"
+                           aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
+                         aria-labelledby="product-desc-link">
+                        <div class="product-desc-content">
+                            <h3>Product Information</h3>
+                            <p>{{ product.description|safe }} </p>
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-review-tab" role="tabpanel"
+                         aria-labelledby="product-review-link">
+                        <div class="reviews">
+                            <h3>Reviews (2)</h3>
+                            <div class="review">
+                                <div class="row no-gutters">
+                                    <div class="col-auto">
+                                        <h4><a href="#">Samanta J.</a></h4>
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 80%;"></div>
+                                                <!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                        </div><!-- End .rating-container -->
+                                        <span class="review-date">6 days ago</span>
+                                    </div><!-- End .col -->
+                                    <div class="col">
+                                        <h4>Good, perfect size</h4>
+
+                                        <div class="review-content">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum
+                                                dolores
+                                                assumenda asperiores facilis porro reprehenderit animi culpa atque
+                                                blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem
+                                                fugit
+                                                beatae quae voluptas!</p>
+                                        </div><!-- End .review-content -->
+
+                                        <div class="review-action">
+                                            <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                                            <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                        </div><!-- End .review-action -->
+                                    </div><!-- End .col-auto -->
+                                </div><!-- End .row -->
+                            </div><!-- End .review -->
+
+                            <div class="review">
+                                <div class="row no-gutters">
+                                    <div class="col-auto">
+                                        <h4><a href="#">John Doe</a></h4>
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 100%;"></div>
+                                                <!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                        </div><!-- End .rating-container -->
+                                        <span class="review-date">5 days ago</span>
+                                    </div><!-- End .col -->
+                                    <div class="col">
+                                        <h4>Very good</h4>
+
+                                        <div class="review-content">
+                                            <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis
+                                                laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi,
+                                                quas
+                                                iure illum repellendus, blanditiis perspiciatis beatae!</p>
+                                        </div><!-- End .review-content -->
+
+                                        <div class="review-action">
+                                            <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                                            <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                        </div><!-- End .review-action -->
+                                    </div><!-- End .col-auto -->
+                                </div><!-- End .row -->
+                            </div><!-- End .review -->
+                        </div><!-- End .reviews -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .product-details-tab -->
+
+            {% if related_products|length > 0 %}
+                <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
+
+                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+                     data-toggle="owl" data-owl-options="{
                             &quot;nav&quot;: false,
                             &quot;dots&quot;: true,
                             &quot;margin&quot;: 20,
@@ -276,65 +288,103 @@
                                 }
                             }
                         }">
-            <!-- End .product -->
-            <div class="owl-stage-outer">
-                <div class="owl-stage"
-                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1485px;">
-                    {% for product in related_products %}
-                    <div class="owl-item" style="width: 277px; margin-right: 20px;">
-                        {% include 'components/product-card.html' with tag='sale'%}
+                    <!-- End .product -->
+                    <div class="owl-stage-outer">
+                        <div class="owl-stage"
+                             style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1485px;">
+                            {% for product in related_products %}
+                                <div class="owl-item" style="width: 277px; margin-right: 20px;">
+                                    {% include 'components/product-card.html' with tag='sale' %}
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="owl-nav">
-                <button type="button" role="presentation" class="owl-prev disabled"><i class="icon-angle-left"></i>
-                </button>
-                <button type="button" role="presentation" class="owl-next"><i class="icon-angle-right"></i></button>
-            </div>
-            <div class="owl-dots disabled">
-                <button role="button" class="owl-dot active"><span></span></button>
-                <button role="button" class="owl-dot"><span></span></button>
-                <button role="button" class="owl-dot"><span></span></button>
-                <button role="button" class="owl-dot"><span></span></button>
-                <button role="button" class="owl-dot"><span></span></button>
-            </div>
-        </div><!-- End .owl-carousel -->
+                    <div class="owl-nav">
+                        <button type="button" role="presentation" class="owl-prev disabled"><i
+                                class="icon-angle-left"></i>
+                        </button>
+                        <button type="button" role="presentation" class="owl-next"><i class="icon-angle-right"></i>
+                        </button>
+                    </div>
+                    <div class="owl-dots disabled">
+                        <button role="button" class="owl-dot active"><span></span></button>
+                        <button role="button" class="owl-dot"><span></span></button>
+                        <button role="button" class="owl-dot"><span></span></button>
+                        <button role="button" class="owl-dot"><span></span></button>
+                        <button role="button" class="owl-dot"><span></span></button>
+                    </div>
+                </div><!-- End .owl-carousel -->
 
-        {% endif %}
-    </div><!-- End .container -->
-</div>
+            {% endif %}
+        </div><!-- End .container -->
+    </div>
 
 {% endblock %}
 
 {% block scripts %}
-<script>
-    $(document).ready(function () {
-        // Handle click event on product gallery items
-        $('.product-gallery-item').on('click', function (e) {
-            e.preventDefault();
+    <script>
+        $(document).ready(function () {
+            // Handle click event on product gallery items
+            $('.product-gallery-item').on('click', function (e) {
+                e.preventDefault();
 
-            // Get the data-type and data-url attributes
-            var dataType = $(this).data('type');
-            var dataUrl = $(this).data('url');
+                // Get the data-type and data-url attributes
+                var dataType = $(this).data('type');
+                var dataUrl = $(this).data('url');
 
-            // Update the content of the main figure based on the data-type
-            if (dataType === 'image') {
-                $('#product-main-figure img').show().attr('src', dataUrl);
-                $('#product-main-figure video').remove();
-                $('.zoomContainer').show();
-            } else if (dataType === 'video') {
-                $('#product-main-figure img').hide();
-                $('.zoomContainer').hide();
-                // Check if a video element already exists, replace it
-                var existingVideo = $('#product-main-figure video');
-                if (existingVideo.length) {
-                    existingVideo.attr('src', dataUrl);
+                // Update the content of the main figure based on the data-type
+                if (dataType === 'image') {
+                    $('#product-main-figure img').show().attr('src', dataUrl);
+                    $('#product-main-figure video').remove();
+                    $('.zoomContainer').show();
+                } else if (dataType === 'video') {
+                    $('#product-main-figure img').hide();
+                    $('.zoomContainer').hide();
+                    // Check if a video element already exists, replace it
+                    var existingVideo = $('#product-main-figure video');
+                    if (existingVideo.length) {
+                        existingVideo.attr('src', dataUrl);
+                    } else {
+                        $('#product-main-figure').append('<video src="' + dataUrl + '" autoplay controls></video>');
+                    }
+                }
+            });
+
+            $('#cart-update').hide()
+        });
+
+        function selectSize(sizeId) {
+            document.querySelector('#cart-update').setAttribute('data-size', sizeId);
+            buttonCheck()
+        }
+
+        function selectColor(colorId) {
+            document.querySelector('#cart-update').setAttribute('data-color', colorId);
+            document.getElementById('color-label-' + colorId).classList.add('active');
+            buttonCheck()
+        }
+
+        function selectQty(qty) {
+            document.querySelector('#cart-update').setAttribute('data-quantity', parseInt(qty));
+            buttonCheck()
+        }
+
+        function buttonCheck() {
+            var cartUpdateBtn = $('#cart-update');
+
+            if (cartUpdateBtn.length > 0) {
+                var quantity = cartUpdateBtn.data('quantity');
+                var size = cartUpdateBtn.data('size');
+                var color = cartUpdateBtn.data('color');
+
+                if (quantity !== undefined && size !== undefined && color !== undefined) {
+                    $('#cart-update').show();
+                     $('#cart-update-duplicate').hide();
                 } else {
-                    $('#product-main-figure').append('<video src="' + dataUrl + '" autoplay controls></video>');
+                     $('#cart-update-duplicate').show();
+                    $('#cart-update').hide();
                 }
             }
-        });
-    });
-</script>
+        }
+    </script>
 {% endblock %}
