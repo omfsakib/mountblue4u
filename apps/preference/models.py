@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
+
+from apps.product.models import ProductModel
 from apps.utils.models import BaseModel
 
 
@@ -46,7 +48,7 @@ class MenuModel(BaseModel):
     class Meta:
         verbose_name = _("Menu")
         verbose_name_plural = _("Menus")
-        ordering = ('-created_at',)
+        ordering = ('position',)
 
 
 class PreferenceModel(BaseModel):
@@ -99,32 +101,8 @@ class PreferenceModel(BaseModel):
         blank=True
     )
 
-    twitter = models.URLField(
-        verbose_name=_('Twitter'),
-        null=True,
-        blank=True
-    )
-
-    linkedin = models.URLField(
-        verbose_name=_('Linkedin'),
-        null=True,
-        blank=True
-    )
-
-    youtube = models.URLField(
-        verbose_name=_('Youtube'),
-        null=True,
-        blank=True
-    )
-
     whatsapp = models.URLField(
         verbose_name=_('WhatsApp'),
-        null=True,
-        blank=True
-    )
-
-    instagram = models.URLField(
-        verbose_name=_('Instagram'),
         null=True,
         blank=True
     )
@@ -160,7 +138,6 @@ class PreferenceModel(BaseModel):
         ordering = ('-created_at',)
 
 
-
 class PageModel(BaseModel):
     title = models.CharField(
         verbose_name=_('Title'),
@@ -194,8 +171,51 @@ class PageModel(BaseModel):
     def __str__(self):
         return self.title
 
-
     class Meta:
         verbose_name = _("Page")
         verbose_name_plural = _("Pages")
         ordering = ('-created_at',)
+
+
+class BannerModel(BaseModel):
+    """
+    Banner model class.
+    """
+    image = models.ImageField(
+        verbose_name=_('Image'),
+        upload_to="banners/"
+    )
+
+    url_path = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name=_("URL path")
+    )
+
+    class Meta:
+        verbose_name = _("Banner")
+        verbose_name_plural = _("Banners")
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return str(self.uuid)[-5:]
+
+
+class TopTendingProductsModel(BaseModel):
+    """
+    Top-tending products model class.
+    """
+    products = models.ManyToManyField(
+        ProductModel,
+        related_name="top_trending_products",
+        verbose_name=_("Products")
+    )
+
+    class Meta:
+        verbose_name = _("Top Tending Product")
+        verbose_name_plural = _("Top Tending Products")
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return str(self.uuid)[-5:]

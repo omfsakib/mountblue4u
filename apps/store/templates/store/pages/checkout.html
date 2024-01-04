@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/shop-style.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="page-header text-center" style="background-image: url('{% static 'images/header-bg.jpeg' %}')">
+        <div class="container-fluid">
+            <h1 class="page-title">Checkout<span>Shop</span></h1>
+        </div><!-- End .container-fluid -->
+    </div>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
+    <div class="page-content">
+        <div class="checkout">
+            <div class="container">
+{#                <div class="checkout-discount">#}
+{#                    <form action="#">#}
+{#                        <input type="text" class="form-control" required="" id="checkout-discount-input">#}
+{#                        <label for="checkout-discount-input" class="text-truncate" style="opacity: 1;">Have a coupon?#}
+{#                            <span>Click here to enter your code</span></label>#}
+{#                    </form>#}
+{#                </div><!-- End .checkout-discount -->#}
+                <form  method="post">
+                {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Name *</label>
+                                    <input type="text" name="name" class="form-control" required="">
+                                </div><!-- End .col-sm-6 -->
+                                <div class="col-sm-6">
+                                    <label>Phone *</label>
+                                    <input type="tel" name="phone" class="form-control" required="">
+                                </div><!-- End .col-sm-6 -->
+
+                            </div><!-- End .row -->
+
+
+                            <label>Street address *</label>
+                            <input type="text" name="address" class="form-control" placeholder="House number and Street name"
+                                   required="">
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Town / City *</label>
+                                    <input type="text" class="form-control" placeholder="e.g: Dhaka" name="city" id="city" required="">
+                                </div><!-- End .col-sm-6 -->
+
+                                <div class="col-sm-6">
+                                    <label>Email (optional)</label>
+                                    <input type="email" class="form-control" placeholder="example@example.com" name="email">
+                                </div><!-- End .col-sm-6 -->
+
+
+                            </div><!-- End .row -->
+
+
+                            <label>Order notes (optional)</label>
+                            <textarea class="form-control" cols="30" rows="4" name="notes"
+                                      placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+                        </div><!-- End .col-lg-9 -->
+                        <aside class="col-lg-3">
+                            <div class="summary">
+                                <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                <table class="table table-summary">
+                                    <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {% for item in items %}
+                                        <tr>
+                                            <td>
+                                                <a href="{% url 'product-details' item.product.uuid %}">{{ item.product.title }}</a>
+                                            </td>
+                                            <td>&#2547; {{ item.total|floatformat:0 }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr class="summary-subtotal">
+                                        <td>Subtotal:</td>
+                                        <td>&#2547; {{ cartTotal|floatformat:0 }}</td>
+                                    </tr><!-- End .summary-subtotal -->
+                                    <tr>
+                                        <td>Shipping:</td>
+                                        <td><span
+                                                id="inside_shipping">&#2547; {{ delivery_charge.inside_fee|floatformat:0 }}</span>
+                                            <span id="outside_shipping">&#2547; {{ delivery_charge.outside_fee|floatformat:0 }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="summary-total">
+                                        <td>Total:</td>
+                                        <td id="total_amount"></td>
+                                    </tr><!-- End .summary-total -->
+                                    </tbody>
+                                </table><!-- End .table table-summary -->
+
+
+                                <button type="submit" onclick="clearCart()" class="btn btn-outline-primary-2 btn-order btn-block">
+                                    <span class="btn-text">Place Order</span>
+                                    <span class="btn-hover-text">Proceed to Checkout</span>
+                                </button>
+                            </div><!-- End .summary -->
+                        </aside><!-- End .col-lg-3 -->
+                    </div><!-- End .row -->
+                </form>
+            </div><!-- End .container -->
+        </div><!-- End .checkout -->
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function() {
+            // Initial state
+            $('#outside_shipping').hide();
+            $('#inside_shipping').show();
+
+            // Function to update the total based on inside or outside shipping
+            function updateTotal() {
+                var cartTotal = parseFloat("{{ cartTotal }}");
+                var insideShippingFee = parseFloat("{{ delivery_charge.inside_fee }}");
+                var outsideShippingFee = parseFloat("{{ delivery_charge.outside_fee }}");
+
+                // Determine the selected city
+                var selectedCity = $('#city').val().toLowerCase();
+
+                // Update shipping fee display
+                if (selectedCity === 'dhaka') {
+                    $('#outside_shipping').hide();
+                    $('#inside_shipping').show();
+                } else {
+                    $('#outside_shipping').show();
+                    $('#inside_shipping').hide();
+                }
+
+                // Update total amount
+                var totalAmount = cartTotal + (selectedCity === 'dhaka' ? insideShippingFee : outsideShippingFee);
+                $('#total_amount').text('৳ ' + totalAmount.toFixed(0));
+            }
+
+            // Call the updateTotal function on page load and city change
+            updateTotal();
+
+            $('#city').on('change', function() {
+                updateTotal();
+            });
+        });
+    </script>
+{% endblock %}

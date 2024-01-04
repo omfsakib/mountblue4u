@@ -95,7 +95,7 @@ class Order(BaseModel):
         max_length=200,
         blank=True,
         null=True,
-        choices=OrderStatus,
+        choices=OrderStatus.choices,
         verbose_name=_("Status")
     )
 
@@ -135,21 +135,21 @@ class Order(BaseModel):
     @property
     def shipping(self):
         shipping = False
-        orderitems = self.orderitem_set.all()
+        orderitems = self.order_products.all()
         for i in orderitems:
-            if i.product.digital == False:
+            if not i.product.digital:
                 shipping = True
         return shipping
 
     @property
     def get_cart_total(self):
-        orderitems = self.orderitem_set.all()
+        orderitems = self.order_products.all()
         total = sum([item.get_total for item in orderitems])
         return total
 
     @property
     def get_cart_items(self):
-        orderitems = self.orderitem_set.all()
+        orderitems = self.order_products.all()
         total = sum([item.quantity for item in orderitems])
         return total
     
@@ -212,7 +212,7 @@ class OrderItem(BaseModel):
     )
 
     def __str__(self):
-        return self.product.name
+        return str(self.uuid)[:5]
 
     @property
     def get_total(self):

@@ -5,19 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Mount Blue</title>
+    <title>{{ preference.site_name }}</title>
     <meta name="keywords" content="Mount Blue">
     <meta name="description" content="Mount Blue - eCommerce">
     <meta name="author" content="mount-blue">
     <meta name="apple-mobile-web-app-title" content="Mount-Blue">
     <meta name="application-name" content="Mount-Blue">
-    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-TileColor" content="#776c61">
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
-    <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+    {% block meta %}
+
+    {% endblock %}
+
+{#    <!-- Favicon -->#}
+{#    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">#}
+{#    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">#}
+{#    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">#}
+{#    <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">#}
 
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -26,27 +30,180 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
 
     <!-- Main CSS File -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+
+    {% block styles %}
+
+    {% endblock %}
+
+    <script>
+        var user = '{{request.user}}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getToken('csrftoken');
+
+        function getCookie(name) {
+            const cookieArr = document.cookie.split(";");
+
+            for (var i = 0; i < cookieArr.length; i++) {
+                const cookiePair = cookieArr[i].split("=");
+
+                if (name == cookiePair[0].trim()) {
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
+            return null;
+        }
+
+        var cart = JSON.parse(getCookie('cart'))
+
+        if (cart == undefined) {
+            cart = {}
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
+        }
+
+    </script>
 
 </head>
 
-    <body>
-        <div class="page-wrapper">
-            {% include 'components/header.html' %}
-        </div>
+<body>
+<div class="page-wrapper">
+    {% include 'components/header.html' %}
+    <main class="main">
+        {% block content %}
 
-     <!-- Plugins JS File -->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
-    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'js/superfish.min.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
-    <script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
-    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-    <!-- Main JS File -->
-    <script src="{% static 'js/main.js' %}"></script>
-    </body>
+        {% endblock %}
+    </main>
+    {% include 'components/footer.html' %}
+</div>
+
+{% include 'components/signin-signup-modal.html' %}
+<!--{% include 'components/poster-popup.html' %}-->
+{% include 'components/mobile-menu.html' %}
+
+
+<!-- Plugins JS File -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/superfish.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+<script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+<script type="text/javascript">
+    var updateBtns = document.getElementsByClassName('update-cart')
+
+
+    for (var i = 0; i < updateBtns.length; i++) {
+        updateBtns[i].addEventListener('click', function () {
+            var productID = this.dataset.product
+            var action = this.dataset.action
+            var color = this.dataset.color
+            var quantity = this.dataset.quantity
+
+            if (color == undefined) {
+                color = "undefined"
+            }
+            if (quantity == undefined) {
+                quantity = 1
+            }
+            var size = this.dataset.size
+
+            if (size == undefined) {
+                size = "undefined"
+            }
+
+            if (user == 'AnonymousUser') {
+                addCookieItem(productID, action, color, size, quantity)
+            } else {
+                updateUserOrder(productID, action, color, size, quantity)
+            }
+        })
+    }
+
+    function clearCart() {
+        cart = {};
+        document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
+    }
+
+    function addCookieItem(productID, action, color, size, quantity) {
+
+        if (action == 'add') {
+            if (cart[productID] == undefined) {
+                cart[productID] = {'quantity': quantity, 'size': size, 'color': color}
+            } else {
+                cart[productID]['quantity'] += parseInt(quantity)
+            }
+        }
+        if (action == 'remove') {
+            cart[productID]['quantity'] -= 1
+
+            if (cart[productID]['quantity'] <= 0) {
+                delete cart[productID]
+            }
+        }
+        if (action == 'delete') {
+            delete cart[productID]
+        }
+        if (action == 'color') {
+            cart[productID]['color'] = color
+        }
+        if (action == 'size') {
+            cart[productID]['size'] = size
+        }
+        document.cookie = 'cart=' + JSON.stringify(cart) + ";doamin=;path=/"
+        location.reload()
+    }
+
+    function updateUserOrder(productID, action, color, size, quantity) {
+        console.log('User is logged in, sending data...')
+
+        var url = '/update_item/'
+        const request = new Request(
+            url,
+            {headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrftoken}}
+        );
+        fetch(request, {
+            method: 'POST',
+            body: JSON.stringify({
+                'productID': productID,
+                'action': action,
+                'color': color,
+                'size': size,
+                'quantity': quantity,
+            })
+        })
+
+            .then((response) => {
+                return response.json()
+            })
+
+            .then((data) => {
+                console.log('data:', data)
+                location.reload()
+            })
+    }
+</script>
+{% block scripts %}
+
+{% endblock %}
+</body>
 </html>

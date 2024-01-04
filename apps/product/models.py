@@ -100,6 +100,15 @@ class ProductModel(BaseModel):
         default=0.0
     )
 
+    category = models.ForeignKey(
+        CategoryModel,
+        related_name="category_products",
+        verbose_name=_("Category"),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
     description = RichTextField(
         verbose_name=_("Description"),
         blank=True,
@@ -135,7 +144,8 @@ class ProductVariantModel(BaseModel):
         verbose_name=_("Product"),
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
+        related_name="product_variants"
     )
 
     size = models.ForeignKey(
@@ -184,7 +194,8 @@ class ProductImagesModel(BaseModel):
         verbose_name=_("Product"),
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
+        related_name="product_images"
     )
 
     image = models.ImageField(
@@ -210,7 +221,8 @@ class ProductVideosModel(BaseModel):
         verbose_name=_("Product"),
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
+        related_name="product_videos"
     )
 
     video = models.FileField(
