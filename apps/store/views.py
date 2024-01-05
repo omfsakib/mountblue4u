@@ -132,6 +132,8 @@ class CheckoutView(View):
         user, created = User.objects.get_or_create(username=phone, phone=phone)
         user.email = email
         user.name = name
+        if created:
+            user.set_password(phone[:8])
         user.save()
 
         order, created = Order.objects.get_or_create(customer=user, complete=False)

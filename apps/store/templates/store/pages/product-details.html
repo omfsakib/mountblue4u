@@ -337,9 +337,11 @@
                     $('#product-main-figure img').show().attr('src', dataUrl);
                     $('#product-main-figure video').remove();
                     $('.zoomContainer').show();
+                    $('#btn-product-gallery').show();
                 } else if (dataType === 'video') {
                     $('#product-main-figure img').hide();
                     $('.zoomContainer').hide();
+                    $('#btn-product-gallery').hide();
                     // Check if a video element already exists, replace it
                     var existingVideo = $('#product-main-figure video');
                     if (existingVideo.length) {
