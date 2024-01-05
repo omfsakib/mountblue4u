@@ -10,7 +10,7 @@ from django.db.models import Min, Max
 from django.views import View
 
 from apps.preference.models import BannerModel, TopTendingProductsModel, PageModel
-from apps.product.models import CategoryModel, ProductModel, SizeModel, ColorModel
+from apps.product.models import CategoryModel, ProductModel, SizeModel, ColorModel, ReviewModel
 from apps.promotion.forms import SubscriptionForm
 from apps.promotion.models import CampaignModel, DeliveryChargeModel
 from apps.blog.models import BlogModel
@@ -273,6 +273,28 @@ class InvoiceView(View):
             'order': order
         }
         return render(request, self.template_name, context)
+
+
+class ProductReview(View):
+    def post(self, request):
+        if request.method == 'POST':
+            product_uuid = request.POST.get('product')
+            comment = request.POST.get('comment')
+            rate = request.POST.get('rate')
+
+            # Assuming you have authenticated users and 'request.user' represents the current user
+            user = request.user if request.user.is_authenticated else None
+
+            # Create a review object
+            review = ReviewModel.objects.create(
+                comment=comment,
+                rate=rate,
+                product_id=product_uuid,
+                user=user
+            )
+
+            # Redirect to the product details page after adding the review
+            return redirect('product-details', uuid=product_uuid)
 
 
 def updateItem(request):
