@@ -57,7 +57,7 @@ class PreferenceModel(BaseModel):
     """
 
     logo = models.ImageField(
-        verbose_name="logo",
+        verbose_name=_("Logo"),
         blank=True,
         null=True,
         upload_to="logo/"

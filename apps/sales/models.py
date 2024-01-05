@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-from apps.product.models import ProductModel
+from apps.product.models import ProductModel, SizeModel, ColorModel
 from apps.user.models import User
 from apps.utils.models import BaseModel
 
@@ -224,6 +224,15 @@ class OrderItem(BaseModel):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+
+    @property
+    def get_size_name(self):
+        size = SizeModel.objects.get(uuid=self.size)
+        return size.name
+    @property
+    def get_color_name(self):
+        color = ColorModel.objects.get(uuid=self.color)
+        return color.name
 
     class Meta:
         verbose_name = _("Order Item")

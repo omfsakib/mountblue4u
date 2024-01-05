@@ -83,20 +83,10 @@ class CustomOrderAdmin(admin.ModelAdmin):
 
     def invoice_button(self, obj):
         return format_html('<a class="button" href="{}">Invoice</a>',
-                           reverse('admin:generate-invoice', args=[obj.uuid]))
+                           reverse('invoice', args=[obj.uuid]))
 
     invoice_button.short_description = 'Invoice'
 
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path('generate-invoice/<uuid:order_uuid>/', self.generate_invoice, name='generate-invoice'),
-        ]
-        return custom_urls + urls
-
-    def generate_invoice(self, request, order_uuid):
-        # Your logic for generating and displaying the invoice
-        pass
 
 
 admin.site.register(Wishlist)

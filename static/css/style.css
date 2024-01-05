@@ -11302,7 +11302,8 @@ a:focus {
 
 .ratings:before,
 .ratings-val:before {
-    content: "\f318" "\f318" "\f318" "\f318" "\f318";
+    font-family: "FontAwesome";
+    content: "\f005" "\f005" "\f005" "\f005" "\f005";
 }
 
 .ratings-val {
