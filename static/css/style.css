@@ -15384,9 +15384,6 @@ button:focus {
 }
 
 @media screen and (max-width: 991px) {
-    .newsletter-img {
-        display: none;
-    }
 
     .newsletter-popup-container .banner-content {
         padding-bottom: 2rem;
