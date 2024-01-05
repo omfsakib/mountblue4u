@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/shop-style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+         style="background: #776c61">
+        <div class="container">
+            <div class="form-box">
+                <div class="form-tab">
+                    <ul class="nav nav-pills nav-fill" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab"
+                               aria-controls="signin-2" aria-selected="true">Sign In</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="signin-2" role="tabpanel"
+                             aria-labelledby="signin-tab-2">
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="singin-email-2">Username or phone number *</label>
+                                    <input type="tel" class="form-control" id="singin-email-2" name="username"
+                                           required="">
+                                    {{ form.error.username }}
+                                </div><!-- End .form-group -->
+
+                                <div class="form-group">
+                                    <label for="singin-password-2">Password *</label>
+                                    <input type="password" class="form-control" id="singin-password-2"
+                                           name="password" required="">
+                                    {{ form.error.password }}
+                                </div><!-- End .form-group -->
+                                <div class="form-footer">
+                                    <button type="submit" class="btn btn-outline-primary-2">
+                                        <span>LOG IN</span>
+                                        <i class="fa fa-long-arrow-right"></i>
+                                    </button>
+                                </div><!-- End .form-footer -->
+                                {{ form.non_field_errors }}
+                            </form>
+                        </div><!-- .End .tab-pane -->
+                    </div><!-- End .tab-content -->
+                </div><!-- End .form-tab -->
+            </div><!-- End .form-box -->
+        </div><!-- End .container -->
+    </div>
+{% endblock %}

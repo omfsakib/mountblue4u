@@ -4,11 +4,11 @@
             <div class="row">
                 <div class="col-sm-6 col-lg-3">
                     <div class="widget widget-about">
-                        <h4 class="widget-title">about {{preference.site_name}}</h4><!-- End .widget-title -->
-                        <p>{{preference.footer_about}} </p>
+                        <h4 class="widget-title">About {{ preference.site_name }}</h4><!-- End .widget-title -->
+                        <p>{{ preference.footer_about }} </p>
 
                         <div class="social-icons">
-                            <a href="{{preference.facebook}}" class="social-icon" target="_blank" title="Facebook">
+                            <a href="{{ preference.facebook }}" class="social-icon" target="_blank" title="Facebook">
                                 <svg width="15" height="15" viewBox="-5 0 20 20" version="1.1"
                                      xmlns="http://www.w3.org/2000/svg"
                                      xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
@@ -30,7 +30,7 @@
                                     </g>
                                 </svg>
                             </a>
-                            <a href="{{preference.whatsapp}}" class="social-icon" target="_blank" title="Whatsapp">
+                            <a href="{{ preference.whatsapp }}" class="social-icon" target="_blank" title="Whatsapp">
                                 <svg fill="#555753" height="15" width="15" version="1.1" id="Icons"
                                      xmlns="http://www.w3.org/2000/svg"
                                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"
@@ -49,7 +49,7 @@
 
                         <ul class="widget-list">
                             {% for menu in footer_menu1 %}
-                            <li><a href="{{menu.url_path}}">{{menu.name}}</a></li>
+                                <li><a href="{{ menu.url_path }}">{{ menu.name }}</a></li>
                             {% endfor %}
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
@@ -60,8 +60,8 @@
                         <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                             {% for menu in footer_menu2 %}
-                            <li><a href="{{menu.url_path}}">{{menu.name}}</a></li>
+                            {% for menu in footer_menu2 %}
+                                <li><a href="{{ menu.url_path }}">{{ menu.name }}</a></li>
                             {% endfor %}
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
@@ -72,9 +72,9 @@
                         <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="#">View Cart</a></li>
+                            <li><a href="{% url 'cart' %}">View Cart</a></li>
                             <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="{% url 'my-account' %}">Track My Order</a></li>
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
                 </div><!-- End .col-sm-6 col-lg-3 -->
@@ -84,7 +84,7 @@
 
     <div class="footer-bottom">
         <div class="container">
-            <p class="footer-copyright">Copyright © {% now "Y" %} {{preference.site_name}}. All Rights Reserved.</p>
+            <p class="footer-copyright">Copyright © {% now "Y" %} {{ preference.site_name }}. All Rights Reserved.</p>
             <!-- End .footer-copyright -->
         </div><!-- End .container -->
     </div><!-- End .footer-bottom -->
