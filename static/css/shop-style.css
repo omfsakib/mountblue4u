@@ -11819,8 +11819,8 @@ button:focus {
   padding-bottom: .1rem;
   transition: all .3s ease; }
   .read-more:after {
-    font-family: 'sans-serif';
-    content: '\f274';
+    font-family: 'FontAwesome';
+    content: '\f178';
     font-size: 1.5rem;
     line-height: 1;
     display: block;

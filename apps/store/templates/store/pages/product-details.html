@@ -97,7 +97,7 @@
                                     {% for product in product.product_variants.all %}
                                         <input type="checkbox" style="display: none" id="color-{{ product.color.uuid }}"
                                                name="color" value="{{ product.color.uuid }}">
-                                        <label class="" for="color-{{ product.color.uuid }}"
+                                        <label class="color-input" for="color-{{ product.color.uuid }}"
                                                onclick="selectColor('{{ product.color.uuid }}')"
                                                id="color-label-{{ product.color.uuid }}"
                                                style="background: {{ product.color.code }};">
@@ -141,8 +141,6 @@
                                 <div class="details-action-wrapper">
                                     <a href="#" class="btn-product btn-wishlist"
                                        title="Wishlist"><span>Add to Wishlist</span></a>
-                                    <a href="#" class="btn-product btn-compare"
-                                       title="Compare"><span>Add to Compare</span></a>
                                 </div><!-- End .details-action-wrapper -->
                             </div><!-- End .product-details-action -->
 
@@ -361,6 +359,7 @@
         }
 
         function selectColor(colorId) {
+            $('.color-input').removeClass('active')
             document.querySelector('#cart-update').setAttribute('data-color', colorId);
             document.getElementById('color-label-' + colorId).classList.add('active');
             buttonCheck()

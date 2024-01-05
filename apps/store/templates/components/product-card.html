@@ -2,39 +2,48 @@
 <div class="product product-7 text-center">
     <figure class="product-media">
         {% if product.discount_amount > 0 and tag == 'sale' %}
-        <span class="product-label label-sale">sale</span>
+            <span class="product-label label-sale">sale</span>
         {% elif tag == 'new' %}
-        <span class="product-label label-new">New</span>
+            <span class="product-label label-new">New</span>
         {% else %}
         {% endif %}
-        <a href="{% url 'product-details' product.uuid %}">
-            <img src="{{product.product_images.first.image.url}}" alt="Product image"
+        <a  href="{% url 'product-details' product.uuid %}">
+            <img src="{{ product.product_images.first.image.url }}" alt="Product image"
                  class="product-image">
-            <img src="{{product.product_images.all.1.image.url}}" alt="Product image"
+            <img src="{{ product.product_images.all.1.image.url }}" alt="Product image"
                  class="product-image-hover">
         </a>
 
         <div class="product-action-vertical">
-            <a href="#"
-               class="btn-product-icon btn-expandable">
-                <i class="fa fa-heart-o" aria-hidden="true"></i><span>add to wishlist</span></a>
+            <form action="{% url 'wishlist' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="product" value="{{ product.uuid }}">
+                <button type="submit" value="add" name="action"
+                        class="btn-product-icon btn-expandable">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i><span>Add to wishlist</span></button>
+            </form>
         </div><!-- End .product-action-vertical -->
 
         <div class="product-action">
-            <button type="button" data-product={{product.uuid}} data-size="{{product.product_variants.first.size.uuid}}" data-color="{{product.product_variants.first.color.uuid}}" data-action="add" class="btn-product add-to-cart update-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span> add to cart</span></button>
+            <button type="button"
+                    data-product={{ product.uuid }} data-size="{{ product.product_variants.first.size.uuid }}"
+                    data-color="{{ product.product_variants.first.color.uuid }}" data-action="add"
+                    class="btn-product add-to-cart update-cart"><i class="fa fa-shopping-cart"
+                                                                   aria-hidden="true"></i> <span> Add to cart</span>
+            </button>
         </div><!-- End .product-action -->
     </figure><!-- End .product-media -->
 
     <div class="product-body">
         <div class="product-cat">
-            <a href="#">{{product.category.name}}</a>
+            <a href="#">{{ product.category.name }}</a>
         </div><!-- End .product-cat -->
-        <h3 class="product-title"><a href="{% url 'product-details' product.uuid %}">{{product.title}}</a></h3>
+        <h3 class="product-title"><a href="{% url 'product-details' product.uuid %}">{{ product.title }}</a></h3>
         <!-- End .product-title -->
         <div class="product-price">
-            <span class="new-price">&#2547; {{product.price|floatformat:0}}</span>
+            <span class="new-price">&#2547; {{ product.price|floatformat:0 }}</span>
             {% with discounted_price=product.price|add:product.discount_amount %}
-            <del>&#2547; {{ discounted_price|floatformat:0 }}</del>
+                <del>&#2547; {{ discounted_price|floatformat:0 }}</del>
             {% endwith %}
         </div><!-- End .product-price -->
     </div><!-- End .product-body -->

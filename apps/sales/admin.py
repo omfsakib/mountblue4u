@@ -7,7 +7,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext as _
 
 from apps.product.models import SizeModel, ColorModel
-from apps.sales.models import Order, OrderItem
+from apps.sales.models import Order, OrderItem, Wishlist
 from apps.user.models import User
 
 
@@ -97,3 +97,6 @@ class CustomOrderAdmin(admin.ModelAdmin):
     def generate_invoice(self, request, order_uuid):
         # Your logic for generating and displaying the invoice
         pass
+
+
+admin.site.register(Wishlist)

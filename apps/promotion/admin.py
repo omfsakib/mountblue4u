@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 
-from apps.promotion.models import DeliveryChargeModel, CouponModel, CampaignModel
+from apps.promotion.models import DeliveryChargeModel, CouponModel, CampaignModel, SubscriptionModel
 
 
 # Register your models here.
@@ -64,3 +64,5 @@ class CampaignAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CampaignModel, CampaignAdmin)
+
+admin.site.register(SubscriptionModel)

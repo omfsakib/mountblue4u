@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/shop-style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="page-header text-center" style="background-image: url('{% static 'images/header-bg.jpeg' %}')">
+        <div class="container-fluid">
+            <h1 class="page-title">Blog</h1>
+        </div><!-- End .container-fluid -->
+    </div>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if blogs|length == 0 %}
+                        <p class="text-center">No Blogs found!</p>
+                    {% else %}
+                        {% for blog in blogs %}
+                            <article class="entry">
+                                <figure class="entry-media">
+                                    <a href="{% url 'blog-details' blog.uuid %}">
+                                        <img src="{{ blog.thumbnail.url }}" alt="image desc">
+                                    </a>
+                                </figure><!-- End .entry-media -->
+
+                                <div class="entry-body">
+                                    <div class="entry-meta">
+                                        <span>{{ blog.created_at|date:'d M Y' }}</span>
+                                    </div><!-- End .entry-meta -->
+
+                                    <h2 class="entry-title">
+                                        <a href="{% url 'blog-details' blog.uuid %}">{{ blog.title }}</a>
+                                    </h2><!-- End .entry-title -->
+
+                                    <div class="entry-content">
+                                        <p>{{ blog.content|truncatechars_html:200|safe }}</p>
+                                        <a href="{% url 'blog-details' blog.uuid %}" class="read-more">Continue
+                                            Reading</a>
+                                    </div><!-- End .entry-content -->
+                                </div><!-- End .entry-body -->
+                            </article><!-- End .entry -->
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div>
+{% endblock %}

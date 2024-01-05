@@ -153,38 +153,10 @@
                     </form>
                 </div><!-- End .header-search -->
                 <div class="dropdown compare-dropdown">
-                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false" data-display="static" title="Compare Products"
-                       aria-label="Compare Products">
-                        <svg height="30" width="30" fill="#555753" viewBox="0 0 32 32"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path d="M 23 3 L 23 7 L 18.40625 7 L 18.125 7.5 L 14.5 13.96875 L 10.59375 7 L 4 7 L 4 9 L 9.40625 9 L 13.34375 16 L 9.40625 23 L 4 23 L 4 25 L 10.59375 25 L 19.59375 9 L 23 9 L 23 13 L 28 8 Z M 16.78125 18 L 15.625 20.0625 L 18.40625 25 L 23 25 L 23 29 L 28 24 L 23 19 L 23 23 L 19.59375 23 Z"></path>
-                            </g>
-                        </svg>
+                    <a href="{% url 'my-account' %}#tab-wishlist" class="dropdown-toggle" role="button">
+                       <i class="fa fa-heart-o"></i>
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
-{#                        <ul class="compare-products">#}
-{#                            <li class="compare-product">#}
-{#                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>#}
-{#                                <h4 class="compare-product-title"><a href="product.html">Blue Night Dress</a></h4>#}
-{#                            </li>#}
-{#                            <li class="compare-product">#}
-{#                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>#}
-{#                                <h4 class="compare-product-title"><a href="product.html">White Long Skirt</a></h4>#}
-{#                            </li>#}
-{#                        </ul>#}
-{##}
-{#                        <div class="compare-actions">#}
-{#                            <a href="#" class="action-link">Clear All</a>#}
-{#                            <a href="#" class="btn btn-outline-primary-2"><span>Compare</span><i#}
-{#                                    class="icon-long-arrow-right"></i></a>#}
-{#                        </div>#}
-                            <p class="text-center">Your compare is empty!</p>
-                    </div><!-- End .dropdown-menu -->
                 </div><!-- End .compare-dropdown -->
 
                 <div class="dropdown cart-dropdown">

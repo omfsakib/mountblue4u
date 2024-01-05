@@ -1,245 +1,216 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block styles %}
-<link rel="stylesheet" href="{% static 'css/shop-style.css' %}">
-<link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/shop-style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="page-header text-center" style="background-image: url('{% static 'images/header-bg.jpeg' %}')">
-    <div class="container-fluid">
-        <h1 class="page-title"><span>Shop</span></h1>
-    </div><!-- End .container-fluid -->
-</div>
+    <div class="page-header text-center" style="background-image: url('{% static 'images/header-bg.jpeg' %}')">
+        <div class="container-fluid">
+            <h1 class="page-title">Shop</h1>
+        </div><!-- End .container-fluid -->
+    </div>
 
-<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-    <div class="container-fluid">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Shop</li>
-        </ol>
-    </div><!-- End .container-fluid -->
-</nav>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Shop</li>
+            </ol>
+        </div><!-- End .container-fluid -->
+    </nav>
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="toolbox">
-            <div class="toolbox-left">
-                <a href="#" class="sidebar-toggler"><i class="fa fa-bars" aria-hidden="true"></i></i>Filters</a>
-            </div><!-- End .toolbox-left -->
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="toolbox">
+                <div class="toolbox-left">
+                    <a href="#" class="sidebar-toggler"><i class="fa fa-bars" aria-hidden="true"></i></i>Filters</a>
+                </div><!-- End .toolbox-left -->
 
-            <div class="toolbox-center">
-                <div class="toolbox-info">
-                    Showing <span>{{showing_products}} of {{total_products}}</span> Products
-                </div><!-- End .toolbox-info -->
-            </div><!-- End .toolbox-center -->
+                <div class="toolbox-center">
+                    <div class="toolbox-info">
+                        Showing <span>{{ showing_products }} of {{ total_products }}</span> Products
+                    </div><!-- End .toolbox-info -->
+                </div><!-- End .toolbox-center -->
 
-            <div class="toolbox-right">
-                <div class="toolbox-sort">
-                    <label for="sortby">Sort by:</label>
-                    <div class="select-custom">
-                        <select name="order_by" onchange="productArrange(this.value)" id="sortby" class="form-control">
-                            <option value="default" {% if applied_filters.order_by == 'default' %} selected="selected" {% endif %}>Default</option>
-                            <option value="price_asc" {% if applied_filters.order_by == 'price_asc' %} selected="selected" {% endif %}>Low to High</option>
-                            <option value="price_desc" {% if applied_filters.order_by == 'price_desc' %} selected="selected" {% endif %}>High to Low</option>
-                        </select>
-                    </div>
-                </div><!-- End .toolbox-sort -->
-            </div><!-- End .toolbox-right -->
-        </div><!-- End .toolbox -->
-
-        <div class="products">
-            <div class="row">
-            {% if total_products == 0 %}
-                <div class="col-12 d-inline-flex justify-content-center">
-                <h4>No products found!</h4>
-                </div>
-            {% else %}
-                {% for product in products %}
-                <div class="col-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
-                    <div class="product">
-                        <figure class="product-media">
-                            {% if product.discount_amount > 0 %}
-                            <span class="product-label label-sale">sale</span>
-                            {% endif %}
-                            <a href="{% url 'product-details' product.uuid %}">
-                                <img src="{{product.product_images.first.image.url}}" alt="Product image"
-                                     class="product-image">
-                                <img src="{{product.product_images.all.1.image.url}}" alt="Product image"
-                                     class="product-image-hover">
-                            </a>
-
-                            <div class="product-action-vertical">
-                                <a href="#"
-                                   class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                            </div><!-- End .product-action -->
-
-                            <div class="product-action action-icon-top">
-                                <button  data-product={{product.uuid}} data-size="{{product.product_variants.first.size.uuid}}" data-color="{{product.product_variants.first.color.uuid}}" data-action="add" class="btn-product btn-cart update-cart"><span>add to cart</span></button>
-                                <button href="popup/quickView.html" class="btn-product btn-quickview"
-                                   title="Quick view"><span>quick view</span></button>
-                                <button href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></button>
-                            </div><!-- End .product-action -->
-                        </figure><!-- End .product-media -->
-
-                        <div class="product-body">
-                            <div class="product-cat">
-                                <a href="#">{{product.category.name}}</a>
-                            </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="{% url 'product-details' product.uuid %}">{{product.title}}</a></h3>
-                            <!-- End .product-title -->
-                            <div class="product-price">
-                                <span class="new-price">&#2547; {{product.price|floatformat:0}}</span>
-                                {% with discounted_price=product.price|add:product.discount_amount %}
-                                <del>&#2547; {{ discounted_price|floatformat:0 }}</del>
-                                {% endwith %}
-                            </div>
-                            <!-- End .product-price -->
-
-                            <div class="product-nav product-nav-dots">
-                                {% for varriant in product.product_variants.all %}
-                                <a href="" style="background: {{varriant.color.code}};"
-                                   class="{% if forloop.first %}active{% endif %}"><span class="sr-only">{{varriant.color.name}}</span></a>
-                                {% endfor %}
-                            </div><!-- End .product-nav -->
-                        </div><!-- End .product-body -->
-                    </div><!-- End .product -->
-                </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
-                {% endfor %}
-            {% endif %}
-            </div><!-- End .row -->
-
-            {% if not total_products <= showing_products %}
-            <div class="load-more-container text-center">
-                    <button onclick="loadMore('{{showing_products}}')" class="btn btn-outline-darker btn-load-more">More Products <i class="fa fa-refresh"
-                                                                                          aria-hidden="true"></i></button>
-            </div><!-- End .load-more-container -->
-            {% endif %}
-        </div><!-- End .products -->
-
-        <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
-        <aside class="sidebar-shop sidebar-filter">
-            <form method="get" action="{% url 'shop' %}">
-                <div class="sidebar-filter-wrapper">
-                    <div class="widget widget-clean">
-                        <button type="submit" class="btn btn-sm btn-outline-secondary">Apply Filtes</button>
-                    </div><!-- End .widget -->
-                    <div class="widget widget-collapsible">
-                        <h3 class="widget-title" >
-                            <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
-                               aria-controls="widget-1" class="">
-                                Category <i class="fa fa-angle-down"></i>
-                            </a>
-                        </h3><!-- End .widget-title -->
-
-                        <div class="collapse show" id="widget-1" style="">
-                            <div class="widget-body">
-                                <div class="filter-items filter-items-count">
-                                    {% for category in categories %}
-                                    <div class="filter-item">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                   id="cat-{{category.uuid}}" name="category"
-                                                   value="{{ category.uuid }}"
-                                                   {% if category.uuid|stringformat:"s" in applied_filters.category %}checked{% endif %}>
-                                            <label class="custom-control-label" for="cat-{{category.uuid}}">
-                                                {{ category.name }}</label>
-                                        </div><!-- End .custom-checkbox -->
-                                        <span class="item-count">{{ category.category_products.all|length }}</span>
-                                    </div><!-- End .filter-item -->
-                                    {% endfor %}
-                                </div><!-- End .filter-items -->
-                            </div><!-- End .widget-body -->
-                        </div><!-- End .collapse -->
-                    </div><!-- End .widget -->
-
-                    <div class="widget widget-collapsible">
-                        <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true"
-                               aria-controls="widget-2" class="">
-                                Size <i class="fa fa-angle-down"></i>
-                            </a>
-                        </h3><!-- End .widget-title -->
-                        <div class="collapse show" id="widget-2" style="">
-                            <div class="widget-body">
-                                <div class="filter-items">
-                                    {% for size in sizes %}
-                                    <div class="filter-item">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="size-{{size.uuid}}"
-                                                   name="size" value="{{ size.uuid }}" {% if size.uuid|stringformat:"s" in applied_filters.size %}checked{% endif %}>
-                                            <label class="custom-control-label" for="size-{{size.uuid}}">{{ size.name}}</label>
-                                        </div><!-- End .custom-checkbox -->
-                                    </div><!-- End .filter-item -->
-                                    {% endfor %}
-                                </div><!-- End .filter-items -->
-                            </div><!-- End .widget-body -->
-                        </div><!-- End .collapse -->
-                    </div><!-- End .widget -->
-
-                    <div class="widget widget-collapsible">
-                        <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true"
-                               aria-controls="widget-3" class="">
-                                Color  <i class="fa fa-angle-down"></i>
-                            </a>
-                        </h3><!-- End .widget-title -->
-
-                        <div class="collapse show" id="widget-3" style="">
-                            <div class="widget-body">
-                                <div class="filter-colors">
-                                    {% for color in colors %}
-                                    <input type="checkbox" {% if applied_filters.color == color.uuid|stringformat:"s" %}checked{% endif %} id="color-{{color.uuid}}" style="display: none" name="color" value="{{color.uuid}}">
-                                    <label for="color-{{color.uuid}}" class="{% if applied_filters.color == color.uuid|stringformat:"s" %}selected{% endif %}" id style="background: {{color.code}};"><span
-                                            class="sr-only">{{color.name}}</span></label>
-                                    {% endfor %}
-                                </div><!-- End .filter-colors -->
-                            </div><!-- End .widget-body -->
-                        </div><!-- End .collapse -->
-                    </div><!-- End .widget -->
-
-
-                    <div class="widget widget-collapsible">
-                        <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="false"
-                               aria-controls="widget-5" class="collapsed">
-                                Price <i class="fa fa-angle-down"></i>
-                            </a>
-                        </h3><!-- End .widget-title -->
-                        <div id="spinner-container">
-                            <span id="lowest_price" style="display: none">{{lowest_price}}</span>
-                            <span id="highest_price" style="display: none">{{highest_price}}</span>
-                            <input type="number" name="min_price" id="min_price_filter" value="{{ lowest_price }}">
-                            <input type="number" name="max_price" id="max_price_filter" value="{{ highest_price }}">
+                <div class="toolbox-right">
+                    <div class="toolbox-sort">
+                        <label for="sortby">Sort by:</label>
+                        <div class="select-custom">
+                            <select name="order_by" onchange="productArrange(this.value)" id="sortby"
+                                    class="form-control">
+                                <option value="default" {% if applied_filters.order_by == 'default' %}
+                                        selected="selected" {% endif %}>Default
+                                </option>
+                                <option value="price_asc" {% if applied_filters.order_by == 'price_asc' %}
+                                        selected="selected" {% endif %}>Low to High
+                                </option>
+                                <option value="price_desc" {% if applied_filters.order_by == 'price_desc' %}
+                                        selected="selected" {% endif %}>High to Low
+                                </option>
+                            </select>
                         </div>
-                        <div class="collapse show" id="widget-5" style="">
-                            <div class="widget-body">
-                                <div class="filter-price">
-                                    <div class="filter-price-text">
-                                        Price Range:
-                                        <span id="filter-price-range">&#2547;{{lowest_price}} - &#2547;{{highest_price}}</span>
-                                    </div><!-- End .filter-price-text -->
+                    </div><!-- End .toolbox-sort -->
+                </div><!-- End .toolbox-right -->
+            </div><!-- End .toolbox -->
 
-                                    <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
-                                        <div class="noUi-base">
+            <div class="products">
+                <div class="row">
+                    {% if total_products == 0 %}
+                        <div class="col-12 d-inline-flex justify-content-center">
+                            <h4>No products found!</h4>
+                        </div>
+                    {% else %}
+                        {% for product in products %}
+                            <div class="col-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
+                            {% include 'components/product-card.html' with tag='sale' %}
+                            </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                        {% endfor %}
+                    {% endif %}
+                </div><!-- End .row -->
 
-                                        </div>
-                                    </div><!-- End #price-slider -->
-                                </div><!-- End .filter-price -->
-                            </div><!-- End .widget-body -->
-                        </div><!-- End .collapse -->
-                    </div><!-- End .widget -->
-                </div>
-            </form><!-- End .sidebar-filter-wrapper -->
-        </aside><!-- End .sidebar-filter -->
-    </div><!-- End .container-fluid -->
-</div>
+                {% if not total_products <= showing_products %}
+                    <div class="load-more-container text-center">
+                        <button onclick="loadMore('{{ showing_products }}')"
+                                class="btn btn-outline-darker btn-load-more">More Products <i class="fa fa-refresh"
+                                                                                              aria-hidden="true"></i>
+                        </button>
+                    </div><!-- End .load-more-container -->
+                {% endif %}
+            </div><!-- End .products -->
+
+            <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
+            <aside class="sidebar-shop sidebar-filter">
+                <form method="get" action="{% url 'shop' %}">
+                    <div class="sidebar-filter-wrapper">
+                        <div class="widget widget-clean">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Apply Filtes</button>
+                        </div><!-- End .widget -->
+                        <div class="widget widget-collapsible">
+                            <h3 class="widget-title">
+                                <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
+                                   aria-controls="widget-1" class="">
+                                    Category <i class="fa fa-angle-down"></i>
+                                </a>
+                            </h3><!-- End .widget-title -->
+
+                            <div class="collapse show" id="widget-1" style="">
+                                <div class="widget-body">
+                                    <div class="filter-items filter-items-count">
+                                        {% for category in categories %}
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           id="cat-{{ category.uuid }}" name="category"
+                                                           value="{{ category.uuid }}"
+                                                           {% if category.uuid|stringformat:"s" in applied_filters.category %}checked{% endif %}>
+                                                    <label class="custom-control-label" for="cat-{{ category.uuid }}">
+                                                        {{ category.name }}</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">{{ category.category_products.all|length }}</span>
+                                            </div><!-- End .filter-item -->
+                                        {% endfor %}
+                                    </div><!-- End .filter-items -->
+                                </div><!-- End .widget-body -->
+                            </div><!-- End .collapse -->
+                        </div><!-- End .widget -->
+
+                        <div class="widget widget-collapsible">
+                            <h3 class="widget-title">
+                                <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true"
+                                   aria-controls="widget-2" class="">
+                                    Size <i class="fa fa-angle-down"></i>
+                                </a>
+                            </h3><!-- End .widget-title -->
+                            <div class="collapse show" id="widget-2" style="">
+                                <div class="widget-body">
+                                    <div class="filter-items">
+                                        {% for size in sizes %}
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           id="size-{{ size.uuid }}"
+                                                           name="size" value="{{ size.uuid }}"
+                                                           {% if size.uuid|stringformat:"s" in applied_filters.size %}checked{% endif %}>
+                                                    <label class="custom-control-label"
+                                                           for="size-{{ size.uuid }}">{{ size.name }}</label>
+                                                </div><!-- End .custom-checkbox -->
+                                            </div><!-- End .filter-item -->
+                                        {% endfor %}
+                                    </div><!-- End .filter-items -->
+                                </div><!-- End .widget-body -->
+                            </div><!-- End .collapse -->
+                        </div><!-- End .widget -->
+
+                        <div class="widget widget-collapsible">
+                            <h3 class="widget-title">
+                                <a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true"
+                                   aria-controls="widget-3" class="">
+                                    Color <i class="fa fa-angle-down"></i>
+                                </a>
+                            </h3><!-- End .widget-title -->
+
+                            <div class="collapse show" id="widget-3" style="">
+                                <div class="widget-body">
+                                    <div class="filter-colors">
+                                        {% for color in colors %}
+                                            <input type="checkbox"
+                                                   {% if applied_filters.color == color.uuid|stringformat:"s" %}checked{% endif %}
+                                                   id="color-{{ color.uuid }}" style="display: none" name="color"
+                                                   value="{{ color.uuid }}">
+                                            <label for="color-{{ color.uuid }}"
+                                                   class="{% if applied_filters.color == color.uuid|stringformat:"s" %}selected{% endif %}"
+                                                   id style="background: {{ color.code }};"><span
+                                                    class="sr-only">{{ color.name }}</span></label>
+                                        {% endfor %}
+                                    </div><!-- End .filter-colors -->
+                                </div><!-- End .widget-body -->
+                            </div><!-- End .collapse -->
+                        </div><!-- End .widget -->
+
+
+                        <div class="widget widget-collapsible">
+                            <h3 class="widget-title">
+                                <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="false"
+                                   aria-controls="widget-5" class="collapsed">
+                                    Price <i class="fa fa-angle-down"></i>
+                                </a>
+                            </h3><!-- End .widget-title -->
+                            <div id="spinner-container">
+                                <span id="lowest_price" style="display: none">{{ lowest_price }}</span>
+                                <span id="highest_price" style="display: none">{{ highest_price }}</span>
+                                <input type="number" name="min_price" id="min_price_filter" value="{{ lowest_price }}">
+                                <input type="number" name="max_price" id="max_price_filter" value="{{ highest_price }}">
+                            </div>
+                            <div class="collapse show" id="widget-5" style="">
+                                <div class="widget-body">
+                                    <div class="filter-price">
+                                        <div class="filter-price-text">
+                                            Price Range:
+                                            <span id="filter-price-range">&#2547;{{ lowest_price }} - &#2547;{{ highest_price }}</span>
+                                        </div><!-- End .filter-price-text -->
+
+                                        <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
+                                            <div class="noUi-base">
+
+                                            </div>
+                                        </div><!-- End #price-slider -->
+                                    </div><!-- End .filter-price -->
+                                </div><!-- End .widget-body -->
+                            </div><!-- End .collapse -->
+                        </div><!-- End .widget -->
+                    </div>
+                </form><!-- End .sidebar-filter-wrapper -->
+            </aside><!-- End .sidebar-filter -->
+        </div><!-- End .container-fluid -->
+    </div>
 {% endblock %}
 
 {% block scripts %}
-<script type="text/javascript">
-    function loadMore(show) {
-        var showing_product = parseInt(show, 10) + 12;
+    <script type="text/javascript">
+        function loadMore(show) {
+            var showing_product = parseInt(show, 10) + 12;
             let url = new URL(window.location.href);
 
             if (url.searchParams.has('show')) {
@@ -249,9 +220,9 @@
             }
 
             window.location.href = url.toString();
-    }
+        }
 
-    function productArrange(value) {
+        function productArrange(value) {
             let url = new URL(window.location.href);
             if (url.searchParams.has('order_by')) {
                 url.searchParams.set('order_by', value);
@@ -259,8 +230,8 @@
                 url.searchParams.append('order_by', value);
             }
             window.location.href = url.toString();
-    }
-</script>
-<script src="{% static 'js/wNumb.js' %}"></script>
-<script src="{% static 'js/nouislider.min.js' %}"></script>
+        }
+    </script>
+    <script src="{% static 'js/wNumb.js' %}"></script>
+    <script src="{% static 'js/nouislider.min.js' %}"></script>
 {% endblock %}

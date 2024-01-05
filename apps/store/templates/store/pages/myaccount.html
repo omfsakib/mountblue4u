@@ -28,12 +28,17 @@
                         <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
 
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab"
-                                   aria-controls="tab-orders" aria-selected="false">Orders</a>
+                                <a class="nav-link active" id="tab-orders-link" data-toggle="tab" href="#tab-orders"
+                                   role="tab"
+                                   aria-controls="tab-orders" aria-selected="true">Orders</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
                                    role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-wishlist-link" data-toggle="tab" href="#tab-wishlist"
+                                   role="tab" aria-controls="tab-wishlist" aria-selected="false">Wishlist</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
@@ -70,7 +75,9 @@
                                                     &#2547; {{ order.total|floatformat:0 }}</td>
                                                 <td>{{ order.created_at|date:"d.m.Y" }}</td>
                                                 <td>{{ order.get_status_display }}</td>
-                                                <td><button><i class="fa fa-long-arrow-right"></i></button></td>
+                                                <td>
+                                                    <button><i class="fa fa-long-arrow-right"></i></button>
+                                                </td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -80,41 +87,95 @@
 
                             <div class="tab-pane fade" id="tab-account" role="tabpanel"
                                  aria-labelledby="tab-account-link">
-                                <form action="#">
+                                <form action="{% url 'my-account' %}" method="post">
+                                    {% csrf_token %}
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <label>First Name *</label>
-                                            <input type="text" class="form-control" required="">
+                                            <label>Name *</label>
+                                            <input type="text" class="form-control" value="{{ request.user.name }}"
+                                                   name="name" required="">
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6">
+                                            <label>Email address *</label>
+                                            <input type="email" value="
+                                                    {% if request.user.email %}{{ request.user.email }}{% endif %}"
+                                                   name="email"
+                                                   class="form-control" required="">
                                         </div><!-- End .col-sm-6 -->
 
-                                        <div class="col-sm-6">
-                                            <label>Last Name *</label>
-                                            <input type="text" class="form-control" required="">
-                                        </div><!-- End .col-sm-6 -->
                                     </div><!-- End .row -->
 
-                                    <label>Display Name *</label>
-                                    <input type="text" class="form-control" required="">
-                                    <small class="form-text">This will be how your name will be displayed in the account
-                                        section and in reviews</small>
-
-                                    <label>Email address *</label>
-                                    <input type="email" class="form-control" required="">
-
                                     <label>Current password (leave blank to leave unchanged)</label>
-                                    <input type="password" class="form-control">
+                                    <input type="password" name="old-password" class="form-control">
 
                                     <label>New password (leave blank to leave unchanged)</label>
-                                    <input type="password" class="form-control">
+                                    <input type="password" name="new-password1" class="form-control">
 
                                     <label>Confirm new password</label>
-                                    <input type="password" class="form-control mb-2">
+                                    <input type="password" name="new-password2" class="form-control mb-2">
 
                                     <button type="submit" class="btn btn-outline-primary-2">
                                         <span>SAVE CHANGES</span>
-                                        <i class="icon-long-arrow-right"></i>
+                                        <i class="fa fa-long-arrow-right"></i>
                                     </button>
                                 </form>
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="tab-wishlist" role="tabpanel"
+                                 aria-labelledby="tab-wishlist-link">
+                                {% if products|length == 0 %}
+                                    <p class="text-center">No wishlist products</p>
+                                {% else %}
+                                    <table class="table table-wishlist table-mobile">
+                                        <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        {% for product in products %}
+                                            <tr>
+                                                <td class="product-col">
+                                                    <div class="product">
+                                                        <figure class="product-media">
+                                                            <a href="{% url 'product-details' product.uuid %}">
+                                                                <img src="{{ product.product_images.first.image.url }}"
+                                                                     alt="Product image">
+                                                            </a>
+                                                        </figure>
+
+                                                        <h3 class="product-title">
+                                                            <a href="{% url 'product-details' product.uuid %}">{{ product.title }}</a>
+                                                        </h3><!-- End .product-title -->
+                                                    </div><!-- End .product -->
+                                                </td>
+                                                <td class="price-col">&#2547; {{ product.price|floatformat:0 }}</td>
+                                                <td class="action-col">
+                                                    <button class="btn btn-block btn-outline-primary-2 update-cart"
+                                                            data-product={{ product.uuid }} data-size="{{ product.product_variants.first.size.uuid }}"
+                                                            data-color="{{ product.product_variants.first.color.uuid }}"
+                                                            data-action="add"><i
+                                                            class="fa fa-shopping-cart"></i>Add to Cart
+                                                    </button>
+                                                </td>
+                                                <td class="remove-col">
+                                                    <form action="{% url 'wishlist' %}" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="product" value="{{ product.uuid }}">
+                                                        <button type="submit" value="remove" name="action"
+                                                                class="btn-remove">
+                                                            <i class="fa fa-close"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}
                             </div><!-- .End .tab-pane -->
                         </div>
                     </div><!-- End .col-lg-9 -->
@@ -122,4 +183,36 @@
             </div><!-- End .container -->
         </div><!-- End .dashboard -->
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            // Get the hash from the URL
+            var hash = window.location.hash;
+
+            // If there's a hash in the URL and it matches a tab, activate it
+            if (hash) {
+                $('.nav-link').removeClass('active');
+                $('.tab-pane').removeClass('show active');
+
+                $('.nav-link[href="' + hash + '"]').addClass('active');
+                $(hash).addClass('show active');
+            }
+
+            // Handle clicking on tabs
+            $('.nav-link').on('click', function (e) {
+                e.preventDefault();
+                var targetTab = $(this).attr('href');
+
+                // Remove active classes from all tabs
+                $('.nav-link').removeClass('active');
+                $('.tab-pane').removeClass('show active');
+
+                // Add active classes to the clicked tab and its content
+                $(this).addClass('active');
+                $(targetTab).addClass('show active');
+            });
+        });
+    </script>
 {% endblock %}
