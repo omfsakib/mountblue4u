@@ -36,7 +36,8 @@
 
                         <div class="entry-body">
                             <div class="entry-meta">
-                                <span>{{ blog.created_at|date:'d M Y' }}</span>
+                                <span>{{ blog.created_at|date:'d M Y' }}</span><span
+                                    class="meta-separator">|</span><span>{{ blog.view_count }} views</span>
                             </div><!-- End .entry-meta -->
 
                             <h2 class="entry-title">

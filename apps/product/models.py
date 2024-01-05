@@ -123,7 +123,8 @@ class ProductModel(BaseModel):
     sell_count = models.PositiveSmallIntegerField(
         verbose_name=_("Sell Count"),
         blank=True,
-        null=True
+        null=True,
+        default=0
     )
 
     def __str__(self):
@@ -133,6 +134,15 @@ class ProductModel(BaseModel):
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
         ordering = ('-created_at',)
+
+    def increment_sell_count(self, quantity):
+        """
+        Increment the sell count by 1.
+        """
+        if self.sell_count is None:
+            self.sell_count = 0
+        self.sell_count += quantity
+        self.save(update_fields=['sell_count'])
 
 
 class ProductVariantModel(BaseModel):
@@ -182,7 +192,7 @@ class ProductVariantModel(BaseModel):
     class Meta:
         verbose_name = _("Product Variant")
         verbose_name_plural = _("Product Variants")
-        ordering = ('-created_at',)
+        ordering = ('created_at',)
 
 
 class ProductImagesModel(BaseModel):

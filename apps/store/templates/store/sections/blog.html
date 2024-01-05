@@ -1,9 +1,9 @@
 {% if blogs|length > 0 %}
     <div class="blog-posts mt-5 mb-5">
-    <div class="container">
-        <h2 class="title text-center mb-4">From Our Blog</h2><!-- End .title text-center -->
+        <div class="container">
+            <h2 class="title text-center mb-4">From Our Blog</h2><!-- End .title text-center -->
 
-        <div class="owl-carousel owl-simple mb-3 owl-loaded owl-drag" data-toggle="owl" data-owl-options="{
+            <div class="owl-carousel owl-simple mb-3 owl-loaded owl-drag" data-toggle="owl" data-owl-options="{
                             &quot;nav&quot;: false,
                             &quot;dots&quot;: true,
                             &quot;items&quot;: 3,
@@ -21,37 +21,39 @@
                                 }
                             }
                         }">
-            <div class="owl-stage-outer">
-                <div class="owl-stage"
-                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1320px;">
-                    {% for blog in blogs %}
-                    <div class="owl-item{% if forloop.first %} active{% endif %}" style="width: 420px; margin-right: 20px;">
-                        <article class="entry">
-                            <figure class="entry-media">
-                                <a href="{% url 'blog-details' blog.uuid %}">
-                                    <img src="{{ blog.thumbnail.url }}" alt="image desc">
-                                </a>
-                            </figure><!-- End .entry-media -->
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                         style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1320px;">
+                        {% for blog in blogs %}
+                            <div class="owl-item{% if forloop.first %} active{% endif %}"
+                                 style="width: 420px; margin-right: 20px;">
+                                <article class="entry">
+                                    <figure class="entry-media">
+                                        <a href="{% url 'blog-details' blog.uuid %}">
+                                            <img src="{{ blog.thumbnail.url }}" alt="image desc">
+                                        </a>
+                                    </figure><!-- End .entry-media -->
 
-                            <div class="entry-body text-center">
-                                <div class="entry-meta">
-                                        <span>{{ blog.created_at|date:'d M Y' }}</span>
-                                </div><!-- End .entry-meta -->
+                                    <div class="entry-body text-center">
+                                        <div class="entry-meta">
+                                            <span>{{ blog.created_at|date:'d M Y' }}</span><span
+                                                class="meta-separator">|</span><span>{{ blog.view_count }} views</span>
+                                        </div><!-- End .entry-meta -->
 
-                                <h3 class="entry-title">
-                                    <a href="{% url 'blog-details' blog.uuid %}">{{blog.title}}</a>
-                                </h3><!-- End .entry-title -->
+                                        <h3 class="entry-title">
+                                            <a href="{% url 'blog-details' blog.uuid %}">{{ blog.title }}</a>
+                                        </h3><!-- End .entry-title -->
 
-                                <div class="entry-content">
-                                    <a href="{% url 'blog-details' blog.uuid %}" class="read-more">Read More</a>
-                                </div><!-- End .entry-content -->
-                            </div><!-- End .entry-body -->
-                        </article>
+                                        <div class="entry-content">
+                                            <a href="{% url 'blog-details' blog.uuid %}" class="read-more">Read More</a>
+                                        </div><!-- End .entry-content -->
+                                    </div><!-- End .entry-body -->
+                                </article>
+                            </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
-        </div><!-- End .owl-carousel -->
-    </div><!-- End .container -->
-</div>
+            </div><!-- End .owl-carousel -->
+        </div><!-- End .container -->
+    </div>
 {% endif %}

@@ -57,12 +57,12 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label>Name *</label>
-                                            <input type="text" name="name" value="{{ request.user.name }}"
+                                            <input type="text" disabled name="name" value="{{ request.user.name }}"
                                                    class="form-control" required="">
                                         </div><!-- End .col-sm-6 -->
                                         <div class="col-sm-6">
                                             <label>Phone *</label>
-                                            <input type="tel" name="phone" value="{{ request.user.phone }}"
+                                            <input type="tel" disabled name="phone" value="{{ request.user.phone }}"
                                                    class="form-control" required="">
                                         </div><!-- End .col-sm-6 -->
 
@@ -94,37 +94,50 @@
 
                                 </div><!-- End .row -->
                             {% else %}
-                                <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Name *</label>
-                                        <input type="text" name="name" class="form-control" required="">
-                                    </div><!-- End .col-sm-6 -->
-                                    <div class="col-sm-6">
-                                        <label>Phone *</label>
-                                        <input type="tel" name="phone" class="form-control" required="">
-                                    </div><!-- End .col-sm-6 -->
+                                <div >
+                                    <div class="d-flex  justify-content-between"><h2 class="checkout-title">Billing
+                                        Details Edit</h2>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Name *</label>
+                                            <input type="text" name="name" value=""
+                                                   class="form-control" required="">
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6">
+                                            <label>Phone *</label>
+                                            <input type="tel" name="phone" value=""
+                                                   class="form-control" required="">
+                                        </div><!-- End .col-sm-6 -->
+
+                                    </div><!-- End .row -->
+
+
+                                    <label>Street address *</label>
+                                    <input type="text" name="address" value=""
+                                           class="form-control"
+                                           placeholder="House number and Street name"
+                                           required="">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Town / City *</label>
+                                            <input type="text" class="form-control" value=""
+                                                   placeholder="e.g: Dhaka" name="city"
+                                                   id="city" required="">
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>Email (optional)</label>
+                                            <input type="email" class="form-control" value=""
+                                                   placeholder="example@example.com"
+                                                   name="email">
+                                        </div><!-- End .col-sm-6 -->
+                                    </div>
+
 
                                 </div><!-- End .row -->
-
-
-                                <label>Street address *</label>
-                                <input type="text" name="address" class="form-control"
-                                       placeholder="House number and Street name"
-                                       required="">
-
-                                <div class="row">
-                                <div class="col-sm-6">
-                                    <label>Town / City *</label>
-                                    <input type="text" class="form-control" placeholder="e.g: Dhaka" name="city"
-                                           id="city" required="">
-                                </div><!-- End .col-sm-6 -->
-
-                                <div class="col-sm-6">
-                                    <label>Email (optional)</label>
-                                    <input type="email" class="form-control" placeholder="example@example.com"
-                                           name="email">
-                                </div><!-- End .col-sm-6 -->
                             {% endif %}
 
 
