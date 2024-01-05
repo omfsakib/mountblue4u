@@ -1,0 +1,243 @@
+{% extends 'admin/index.html' %}
+{% block coltype %}{% endblock %}
+{% block nav-sidebar %}
+    {% include "admin/nav_sidebar.html" %}
+{% endblock %}
+{% block content %}
+    <div class="content-main">
+        <style>
+            #content {
+                width: 70vw !important;
+            }
+
+            .row {
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+                margin-right: -15px;
+                margin-left: -15px;
+            }
+
+            .col {
+                -ms-flex-preferred-size: 0;
+                flex-basis: 0;
+                -ms-flex-positive: 1;
+                flex-grow: 1;
+                max-width: 100%;
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+
+            .card {
+                position: relative;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                min-width: 150px;
+                word-wrap: break-word;
+                background-color: #fff;
+                background-clip: border-box;
+                border: 1px solid rgba(0, 0, 0, .125);
+                border-radius: 0.25rem;
+                margin-bottom: 10px;
+                height: 150px;
+            }
+
+            .card-header {
+                padding: 0.75rem 1.25rem;
+                margin-bottom: 0;
+                background-color: rgba(0, 0, 0, .03);
+                border-bottom: 1px solid rgba(0, 0, 0, .125);
+            }
+
+            .card-body {
+                -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
+                min-height: 1px;
+                padding: 1.25rem;
+            }
+
+            .text-center {
+                text-align: center;
+            }
+
+            .text-white h5 {
+                font-size: 12px;
+            }
+
+            .text-white h5, .text-white h3 {
+                color: #fff !important;
+            }
+
+            #orders-cancel {
+                background-color: #ee3333;
+            }
+
+            #orders-return {
+                background-color: #eeb133;
+            }
+
+            #total-orders {
+                background-color: #4cb4c7;
+            }
+
+            #orders-delivered {
+                background-color: #7abecc;
+            }
+
+            #orders-transit {
+                background-color: #40b8a1;
+            }
+
+            #orders-confirmed {
+                background-color: #73bfb0;
+            }
+
+            #orders-pending {
+                background-color: #70c8b7;
+            }
+        </style>
+        <div class="count_table">
+            <div class="row text-center">
+                <div class="col">
+                    <div class="col-md">
+                        <div class="card text-center text-white md-3" id="total-orders">
+                            <div style="color: white !important; text-decoration:none;">
+                                <div class="card-header">
+                                    <h5 class="card-title">Total Orders</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title total-orders text-center">{{ total_orders }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col-md">
+                        <div class="card text-center text-white md-3" id="orders-pending">
+                            <div style="color: white !important; text-decoration:none;">
+                                <div class="card-header">
+                                    <h5 class="card-title">Pending</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title pending-orders">{{ pending }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col-md">
+                        <div class="card text-center text-white md-3" id="orders-confirmed">
+                            <div
+                                    style="color: white !important; text-decoration:none;">
+                                <div class="card-header">
+                                    <h5 class="card-title">Confirmed</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title confirmed-orders">{{ confirmed }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col-md">
+                        <div class="card text-center text-white md-3" id="orders-delivered">
+                            <div
+                                    style="color: white !important; text-decoration:none;">
+                                <div class="card-header">
+                                    <h5 class="card-title">Delivered</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title delivered-orders">{{ delivered }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col-md">
+                        <div class="card text-center text-white md-3" id="orders-transit">
+                            <div
+                                    style="color: white !important; text-decoration:none;">
+                                <div class="card-header">
+                                    <h5 class="card-title">In Transit</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title transit-orders">{{ in_transit }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="col-md">
+                        <div class="card text-center text-white md-3" id="orders-return">
+                            <div style="color: white !important; text-decoration:none;">
+                                <div class="card-header">
+                                    <h5 class="card-title">Return</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title return-orders">{{ return }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col-md">
+                        <div class="card text-center text-white md-3" id="orders-cancel">
+                            <div style="color: white !important; text-decoration:none;">
+                                <div class="card-header">
+                                    <h5 class="card-title">Cancel</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title cancel-orders">{{ cancel }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>Top Selling Products</h2>
+        <table id="result_list" style="width: 100%">
+            <thead>
+            <tr>
+                <th scope="col" class="sortable column-name">
+                    Product
+                </th>
+                <th scope="col" class="sortable column-type">
+                    Sell Count
+                </th>
+                <th scope="col" class="sortable column-position sorted ascending">
+                    Rating
+                </th>
+                <th scope="col" class="sortable column-url_path">
+                    View Product
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in top_selling_products %}
+                <tr>
+                    <td class="field-name"><img src="{{ product.product_images.first.image.url }}" height="40"
+                                                width="40" alt="">
+                        {{ product.title }}
+                    </td>
+                    <td class="field-type">{{ product.sell_count }}</td>
+                    <td class="field-position">{{ product.rating }}</td>
+                    <td class="field-url_path"><a class="button" target="_blank"
+                                                  href="{% url 'product-details' product.uuid %}">View</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block sidebar %}{% endblock %}

@@ -71,7 +71,7 @@ LOGOUT_REDIRECT_URL = "/"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,6 +81,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'apps.preference.context_processors.get_context',
                 'apps.store.cart_context.get_cart',
+                'apps.sales.context_pocessors.get_context'
             ],
         },
     },
