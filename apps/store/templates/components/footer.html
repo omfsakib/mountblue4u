@@ -6,6 +6,19 @@
                     <div class="widget widget-about">
                         <h4 class="widget-title">About {{ preference.site_name }}</h4><!-- End .widget-title -->
                         <p>{{ preference.footer_about }} </p>
+                        <form action="{% url 'subscribe' %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group mb-5">
+                                <input type="email" name="email" class="form-control bg-transparent"
+                                       placeholder="Enter your Email Address" required="">
+                                <div class="input-group-append">
+                                    <button class="btn-outline-secondary" type="submit">
+                                        <span>SUBSCRIBE</span>
+                                        <i class="fa fa-long-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
 
                         <div class="social-icons">
                             <a href="{{ preference.facebook }}" class="social-icon" target="_blank" title="Facebook">

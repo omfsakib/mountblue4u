@@ -114,3 +114,22 @@ class CampaignModel(BaseModel):
         verbose_name = _("Campaign")
         verbose_name_plural = _("Campaign")
         ordering = ("-created_at",)
+
+
+class SubscriptionModel(BaseModel):
+    """
+    Subscription model class
+    """
+
+    email = models.EmailField(
+        verbose_name=_("Email"),
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = _("Subscriber")
+        verbose_name_plural = _("Subscribers")
+        ordering = ("-created_at",)

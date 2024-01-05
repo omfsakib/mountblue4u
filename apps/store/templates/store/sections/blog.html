@@ -1,4 +1,5 @@
-<div class="blog-posts mt-5 mb-5">
+{% if blogs|length > 0 %}
+    <div class="blog-posts mt-5 mb-5">
     <div class="container">
         <h2 class="title text-center mb-4">From Our Blog</h2><!-- End .title text-center -->
 
@@ -27,22 +28,22 @@
                     <div class="owl-item{% if forloop.first %} active{% endif %}" style="width: 420px; margin-right: 20px;">
                         <article class="entry">
                             <figure class="entry-media">
-                                <a href="#">
+                                <a href="{% url 'blog-details' blog.uuid %}">
                                     <img src="{{ blog.thumbnail.url }}" alt="image desc">
                                 </a>
                             </figure><!-- End .entry-media -->
 
                             <div class="entry-body text-center">
                                 <div class="entry-meta">
-                                    <a href="#">{{blog.created_at}}</a>
+                                        <span>{{ blog.created_at|date:'d M Y' }}</span>
                                 </div><!-- End .entry-meta -->
 
                                 <h3 class="entry-title">
-                                    <a href="#">{{blog.title}}</a>
+                                    <a href="{% url 'blog-details' blog.uuid %}">{{blog.title}}</a>
                                 </h3><!-- End .entry-title -->
 
                                 <div class="entry-content">
-                                    <a href="#" class="read-more">Read More</a>
+                                    <a href="{% url 'blog-details' blog.uuid %}" class="read-more">Read More</a>
                                 </div><!-- End .entry-content -->
                             </div><!-- End .entry-body -->
                         </article>
@@ -53,3 +54,4 @@
         </div><!-- End .owl-carousel -->
     </div><!-- End .container -->
 </div>
+{% endif %}

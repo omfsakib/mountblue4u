@@ -11,6 +11,7 @@ class Order(BaseModel):
     """
     Order model class
     """
+
     class OrderStatus(models.TextChoices):
         pending = 'pending', _("Pending")
         customer_confirmed = 'customer_confirmed', _("Customer Confirmed")
@@ -112,7 +113,7 @@ class Order(BaseModel):
         blank=True,
         verbose_name=_("City")
     )
-    
+
     notes = models.TextField(
         verbose_name=_("Notes"),
         blank=True,
@@ -152,8 +153,8 @@ class Order(BaseModel):
         orderitems = self.order_products.all()
         total = sum([item.quantity for item in orderitems])
         return total
-    
-    
+
+
 class OrderItem(BaseModel):
     """
     Order item model class
@@ -223,3 +224,20 @@ class OrderItem(BaseModel):
         verbose_name = _("Order Item")
         verbose_name_plural = _("Order Items")
         ordering = ('-created_at',)
+
+
+class Wishlist(BaseModel):
+    """
+    Wishlist model class
+    """
+    customer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="customer_wishlist",
+    )
+
+    products = models.ManyToManyField(
+        ProductModel,
+        related_name="customer_wishlist"
+    )
+   

@@ -1,20 +1,21 @@
 import json
 
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.db.models import Min, Max
 from django.views import View
 
-from apps.preference.models import BannerModel, TopTendingProductsModel
+from apps.preference.models import BannerModel, TopTendingProductsModel, PageModel
 from apps.product.models import CategoryModel, ProductModel, SizeModel, ColorModel
+from apps.promotion.forms import SubscriptionForm
 from apps.promotion.models import CampaignModel, DeliveryChargeModel
 from apps.blog.models import BlogModel
 from apps.product.filters import ProductFilter
-from apps.sales.models import Order, OrderItem
+from apps.sales.models import Order, OrderItem, Wishlist
 from apps.store.cart_context import cookieCart
 from apps.user.models import User
 
@@ -25,7 +26,8 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = {
             'banners': BannerModel.objects.filter(is_active=True),
-            'top_trending_products': TopTendingProductsModel.objects.last().products.all()[:8] if TopTendingProductsModel.objects.last() else [],
+            'top_trending_products': TopTendingProductsModel.objects.last().products.all()[
+                                     :8] if TopTendingProductsModel.objects.last() else [],
             'featured_categorys': CategoryModel.objects.filter(is_active=True, is_featured=True),
             'new_arrivals': ProductModel.objects.filter(is_active=True).order_by('-created_at')[:8],
             'campaigns': CampaignModel.objects.filter(is_active=True).order_by('-created_at')[:2],
@@ -170,9 +172,90 @@ class MyAccountView(LoginRequiredMixin, View):
     template_name = 'store/pages/myaccount.html'
 
     def get(self, request, *args, **kwargs):
+        customer = request.user
+        wishList, created = Wishlist.objects.get_or_create(customer=customer)
         context = {
             'orders': Order.objects.filter(complete=True),
+            'products': wishList.products.all(),
         }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        old_password = request.POST.get('old-password')
+        new_password1 = request.POST.get('new-password1')
+        new_password2 = request.POST.get('new-password2')
+
+        user = request.user
+        user.name = name
+        user.email = email
+        if old_password and new_password1 and new_password2:
+            if user.check_password(old_password) and new_password1 == new_password2:
+                user.set_password(new_password1)
+                update_session_auth_hash(request, user)
+            else:
+                return redirect('/myaccount/#tab-account')
+
+        user.save()
+        return redirect('/myaccount/#tab-account')
+
+
+class WishListView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        product = ProductModel.objects.get(uuid=request.POST.get('product'))
+        customer = request.user
+        wishList, created = Wishlist.objects.get_or_create(customer=customer)
+        if request.POST.get('action') == 'add':
+            wishList.products.add(product)
+        elif request.POST.get('action') == 'remove':
+            wishList.products.remove(product)
+            return redirect('/myaccount/#tab-wishlist')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class BlogListView(View):
+    template_name = 'store/pages/blog.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'blogs': BlogModel.objects.filter(is_active=True)
+        }
+
+        return render(request, self.template_name, context)
+
+
+class BlogDetailsView(View):
+    template_name = 'store/pages/blog-details.html'
+
+    def get(self, request, *args, **kwargs):
+        uuid = kwargs.get('uuid')
+        blog = BlogModel.objects.get(uuid=uuid)
+        context = {
+            'blog': blog
+        }
+
+        return render(request, self.template_name, context)
+
+
+class SubscriptionPostView(View):
+    def post(self, request, *args, **kwargs):
+        form = SubscriptionForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class PageView(View):
+    template_name = 'store/pages/page.html'
+
+    def get(self, request, *args, **kwargs):
+        slug = kwargs.get('slug')
+        page = PageModel.objects.get(slug=slug)
+        context = {
+            'page': page
+        }
+
         return render(request, self.template_name, context)
 
 
