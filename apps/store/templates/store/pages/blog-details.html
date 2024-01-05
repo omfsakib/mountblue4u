@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/shop-style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="page-header text-center" style="background-image: url('{% static 'images/header-bg.jpeg' %}')">
+        <div class="container-fluid">
+            <h1 class="page-title">Blog</h1>
+        </div><!-- End .container-fluid -->
+    </div>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'blog-list' %}">Blogs</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ blog.title|truncatechars_html:20 }}</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <article class="entry single-entry">
+                        <figure class="entry-media">
+                            <video id="videoPlayer" controls>
+                                <source src="{{ blog.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <img id="videoThumbnail" src="{{ blog.thumbnail.url }}" alt="Video Thumbnail"
+                                 style="cursor: pointer;">
+
+                        </figure><!-- End .entry-media -->
+
+                        <div class="entry-body">
+                            <div class="entry-meta">
+                                <span>{{ blog.created_at|date:'d M Y' }}</span>
+                            </div><!-- End .entry-meta -->
+
+                            <h2 class="entry-title">
+                                {{ blog.title }}
+                            </h2><!-- End .entry-title -->
+
+                            <div class="entry-content editor-content">
+                                <p>{{ blog.content|safe }}</p>
+                            </div><!-- End .entry-content -->
+                        </div><!-- End .entry-body -->
+                    </article><!-- End .entry -->
+                </div><!-- End .col-lg-9 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the video element and image element
+            var video = document.getElementById('videoPlayer');
+            var thumbnail = document.getElementById('videoThumbnail');
+
+            // Hide the video initially
+            video.style.display = 'none';
+
+            // Show video and hide the image when image is clicked
+            thumbnail.addEventListener('click', function () {
+                video.style.display = 'block';
+                thumbnail.style.display = 'none';
+
+                // Start playing the video
+                video.play();
+            });
+        });
+    </script>
+
+{% endblock %}
