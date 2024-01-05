@@ -112,7 +112,8 @@ class CheckoutView(View):
     def get(self, request, *args, **kwargs):
         context = {
             'delivery_charge': DeliveryChargeModel.objects.last(),
-            'last_order': Order.objects.filter(customer=request.user, complete=True).last() if request.user.is_authenticated else {}
+            'last_order': Order.objects.filter(customer=request.user,
+                                               complete=True).last() if request.user.is_authenticated else {}
         }
         return render(request, self.template_name, context)
 
@@ -142,6 +143,7 @@ class CheckoutView(View):
         order.status = Order.OrderStatus.customer_confirmed
         order.address = address
         order.notes = notes
+        order.delivery_fee = delivery_charge
         order.city = city
 
         if request.user.is_authenticated:
@@ -257,6 +259,19 @@ class PageView(View):
             'page': page
         }
 
+        return render(request, self.template_name, context)
+
+
+class InvoiceView(View):
+    template_name = 'store/pages/invoice.html'
+
+    def get(self, request, *args, **kwargs):
+        uuid = kwargs.get('uuid')
+        order = Order.objects.get(uuid=uuid)
+
+        context = {
+            'order': order
+        }
         return render(request, self.template_name, context)
 
 

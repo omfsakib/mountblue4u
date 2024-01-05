@@ -152,15 +152,24 @@
 
                                 <div class="social-icons social-icons-sm">
                                     <span class="social-label">Share:</span>
-                                    <a href="#" class="social-icon" title="Facebook" target="_blank"><i
-                                            class="fa fa-facebook"></i></a>
-                                    <a href="#" class="social-icon" title="Twitter" target="_blank"><i
-                                            class="fa fa-twitter"></i></a>
-                                    <a href="#" class="social-icon" title="Instagram" target="_blank"><i
-                                            class="fa fa-instagram"></i></a>
-                                    <a href="#" class="social-icon" title="Whatsapp" target="_blank"><i
-                                            class="fa fa-whatsapp"></i></a>
+                                    <a href="javascript:void(0);" onclick="shareOnFacebook()"
+                                       class="social-icon" title="Facebook">
+                                        <i class="fa fa-facebook"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" onclick="shareOnTwitter()"
+                                       class="social-icon" title="Twitter">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" onclick="shareOnInstagram()"
+                                       class="social-icon" title="Instagram">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" onclick="shareOnWhatsApp()"
+                                       class="social-icon" title="Whatsapp">
+                                        <i class="fa fa-whatsapp"></i>
+                                    </a>
                                 </div>
+
                             </div><!-- End .product-details-footer -->
                         </div><!-- End .product-details -->
                     </div><!-- End .col-md-6 -->
@@ -321,6 +330,27 @@
 
 {% block scripts %}
     <script>
+        function shareOnFacebook() {
+            var url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+        }
+
+        function shareOnTwitter() {
+            var url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+        }
+
+        function shareOnInstagram() {
+            var url = `https://www.instagram.com/?url=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+        }
+
+        function shareOnWhatsApp() {
+            var url = `https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+    <script>
         $(document).ready(function () {
             // Handle click event on product gallery items
             $('.product-gallery-item').on('click', function (e) {
@@ -380,9 +410,9 @@
 
                 if (quantity !== undefined && size !== undefined && color !== undefined) {
                     $('#cart-update').show();
-                     $('#cart-update-duplicate').hide();
+                    $('#cart-update-duplicate').hide();
                 } else {
-                     $('#cart-update-duplicate').show();
+                    $('#cart-update-duplicate').show();
                     $('#cart-update').hide();
                 }
             }
