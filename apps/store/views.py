@@ -112,7 +112,7 @@ class CheckoutView(View):
     def get(self, request, *args, **kwargs):
         context = {
             'delivery_charge': DeliveryChargeModel.objects.last(),
-            'last_order': Order.objects.filter(customer=request.user, complete=True).last()
+            'last_order': Order.objects.filter(customer=request.user, complete=True).last() if request.user.is_authenticated else {}
         }
         return render(request, self.template_name, context)
 
@@ -131,7 +131,7 @@ class CheckoutView(View):
         else:
             delivery_charge = delivery_object.outside_fee
 
-        user, created = User.objects.get_or_create(username=phone, phone=phone)
+        user, created = User.objects.get_or_create(phone=phone)
         user.email = email
         user.name = name
         if created:
@@ -231,6 +231,7 @@ class BlogDetailsView(View):
     def get(self, request, *args, **kwargs):
         uuid = kwargs.get('uuid')
         blog = BlogModel.objects.get(uuid=uuid)
+        blog.increment_views()
         context = {
             'blog': blog
         }

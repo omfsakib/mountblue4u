@@ -13,9 +13,9 @@ class Order(BaseModel):
     """
 
     class OrderStatus(models.TextChoices):
-        pending = 'pending', _("Pending")
-        customer_confirmed = 'customer_confirmed', _("Customer Confirmed")
-        admin_confirmed = 'admin_confirmed', _("Admin Confirmed")
+        pending = 'customer_initial', _("Customer Initial")
+        customer_confirmed = 'customer_confirmed', _("Pending")
+        admin_confirmed = 'admin_confirmed', _("Confirmed")
         in_transit = 'in_transit', _("In-Transit")
         delivered = 'delivered', _("Delivered")
         in_return = 'return', _("Return")
@@ -124,6 +124,11 @@ class Order(BaseModel):
         # Calculate due based on total and advance
         self.due = max(0, self.total - self.advance)
         super(Order, self).save(*args, **kwargs)
+
+        if self.complete == True:
+            orderitems = self.order_products.all()
+            for item in orderitems:
+                item.product.increment_sell_count(item.quantity)
 
     class Meta:
         verbose_name = _("Order")
@@ -240,4 +245,3 @@ class Wishlist(BaseModel):
         ProductModel,
         related_name="customer_wishlist"
     )
-   
