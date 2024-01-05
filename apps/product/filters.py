@@ -28,7 +28,7 @@ class ProductFilter(django_filters.FilterSet):
 
     def search_products(self, queryset, name, value):
         return queryset.filter(
-            Q(title__icontains=value) | Q(description__icontains=value)
+            Q(title__icontains=value) | Q(description__icontains=value) | Q(product_variants__code__icontains=value)
         )
 
     def filter_order_by(self, queryset, name, value):

@@ -3,9 +3,9 @@
     <div class="mobile-menu-wrapper">
         <span class="mobile-menu-close"><i class="fa fa-times" aria-hidden="true"></i></span>
 
-        <form action="#" method="get" class="mobile-search">
+        <form action="{% url 'shop' %}" method="get" class="mobile-search">
             <label for="mobile-search" class="sr-only">Search</label>
-            <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..."
+            <input type="search" class="form-control" name="q" id="mobile-search" placeholder="Search in..."
                    required="">
             <button class="btn btn-primary" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
         </form>
@@ -13,15 +13,27 @@
         <nav class="mobile-nav">
             <ul class="mobile-menu">
                 {% for menu in main_menu %}
-                <li>
-                    <a href="{{menu.url_path}}">{{menu.name}}</a>
-                </li>
+                    <li>
+                        <a href="{{ menu.url_path }}">{{ menu.name }}</a>
+                    </li>
                 {% endfor %}
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'my-account' %}">My Account</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}">Sign Out</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
             </ul>
         </nav><!-- End .mobile-nav -->
 
         <div class="social-icons">
-            <a href="{{preference.facebook}}" class="social-icon" target="_blank" title="Facebook">
+            <a href="{{ preference.facebook }}" class="social-icon" target="_blank" title="Facebook">
                 <svg width="15" height="15" viewBox="-5 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
                      xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -41,7 +53,7 @@
                     </g>
                 </svg>
             </a>
-            <a href="{{preference.whatsapp}}" class="social-icon" target="_blank" title="Whatsapp">
+            <a href="{{ preference.whatsapp }}" class="social-icon" target="_blank" title="Whatsapp">
                 <svg fill="#555753" height="15" width="15" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg"
                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

@@ -3,7 +3,7 @@
     <div class="header-top">
         <div class="container">
             <div class="header-left">
-                <ul class="top-menu top-link-menu d-none d-md-block">
+                <ul class="top-menu top-link-menu d-block   ">
                     <li>
                         <a href="#">Links</a>
                         <ul>
@@ -144,7 +144,7 @@
                             </g>
                         </svg>
                     </a>
-                    <form action="#" method="get">
+                    <form action="{% url 'shop' %}" method="get">
                         <div class="header-search-wrapper">
                             <label for="q" class="sr-only">Search</label>
                             <input type="search" class="form-control" name="q" id="q" placeholder="Search in..."
@@ -247,8 +247,8 @@
                             </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
-                                <a href="/cart" class="btn btn-primary">View Cart</a>
-                                <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i
+                                <a href="{% url 'cart' %}" class="btn btn-primary">View Cart</a>
+                                <a href="{% url 'checkout' %}" class="btn btn-outline-primary-2"><span>Checkout</span><i
                                         class="fa fa-long-arrow-right"></i></a>
                             </div>{% endif %}<!-- End .dropdown-cart-total -->
                     </div><!-- End .dropdown-menu -->
