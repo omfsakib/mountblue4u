@@ -4,7 +4,7 @@ from apps.sales.models import Order
 
 def get_context(request):
     orders = Order.objects.filter(complete=True)
-    top_selling_products = ProductModel.objects.filter(is_active=True).order_by('-sell_count')
+    top_selling_products = ProductModel.objects.filter(is_active=True).order_by('-sell_count')[:10]
 
     context = {
         'total_orders': orders.count(),
