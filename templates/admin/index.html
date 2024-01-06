@@ -4,12 +4,12 @@
 {% block nav-breadcrumbs %}
     <nav aria-label="{% translate 'Breadcrumbs' %}">
         {% block breadcrumbs %}
-          <div class="breadcrumbs">
-            <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
-            {% if title %} &rsaquo; {{ title }}{% endif %}
-          </div>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+                {% if title %} &rsaquo; {{ title }}{% endif %}
+            </div>
         {% endblock %}
-      </nav>
+    </nav>
 {% endblock %}
 {% block nav-sidebar %}
     {% include "admin/nav_sidebar.html" %}
@@ -18,7 +18,14 @@
     <div class="content-main">
         <style>
             #content {
-                width: 70vw !important;
+                width: auto !important;
+            }
+
+            /* For smaller devices, like phones */
+            @media (max-width: 768px) {
+                #content {
+                    width: auto !important;
+                }
             }
 
             .row {
