@@ -21,13 +21,15 @@
     {#    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">#}
     {#    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">#}
     {#    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">#}
-        <link rel="shortcut icon" href="{% static  'images/favicon.png'%}">
+    <link rel="shortcut icon" href="{% static  'images/favicon.png' %}">
 
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
     <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7605401648955400"
+            crossorigin="anonymous"></script>
 
     <!-- Main CSS File -->
 
@@ -82,11 +84,11 @@
 
 <body>
 <!-- Messenger Chat plugin Code -->
-    <div id="fb-root"></div>
+<div id="fb-root"></div>
 
-    <!-- Your Chat plugin code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div>
+<!-- Your Chat plugin code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
 
 
 <div class="page-wrapper">
@@ -104,28 +106,29 @@
 {% include 'components/mobile-menu.html' %}
 
 <script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "112406477615100");
-      chatbox.setAttribute("attribution", "biz_inbox");
-    </script>
+    var chatbox = document.getElementById('fb-customer-chat');
+    chatbox.setAttribute("page_id", "112406477615100");
+    chatbox.setAttribute("attribution", "biz_inbox");
+</script>
 
-    <!-- Your SDK code -->
-    <script>
-      window.fbAsyncInit = function() {
+<!-- Your SDK code -->
+<script>
+    window.fbAsyncInit = function () {
         FB.init({
-          xfbml            : true,
-          version          : 'v18.0'
+            xfbml: true,
+            version: 'v18.0'
         });
-      };
+    };
 
-      (function(d, s, id) {
+    (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
+        js = d.createElement(s);
+        js.id = id;
         js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
         fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-    </script>
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 <!-- Plugins JS File -->
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
