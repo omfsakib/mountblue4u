@@ -40,8 +40,8 @@
                                 <a class="nav-link" id="tab-wishlist-link" data-toggle="tab" href="#tab-wishlist"
                                    role="tab" aria-controls="tab-wishlist" aria-selected="false">Wishlist</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
+                            <li>
+                                <a href="{% url 'logout' %}">Sign Out</a>
                             </li>
                         </ul>
                     </aside><!-- End .col-lg-3 -->
@@ -76,7 +76,8 @@
                                                 <td>{{ order.created_at|date:"d.m.Y" }}</td>
                                                 <td>{{ order.get_status_display }}</td>
                                                 <td>
-                                                    <button><i class="fa fa-long-arrow-right"></i></button>
+                                                    <a href="{% url 'invoice' order.uuid %}"><i
+                                                            class="fa fa-long-arrow-right"></i></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}

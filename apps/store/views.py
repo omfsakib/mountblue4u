@@ -132,12 +132,15 @@ class CheckoutView(View):
         else:
             delivery_charge = delivery_object.outside_fee
 
-        user, created = User.objects.get_or_create(username=phone, phone=phone)
-        user.email = email
-        user.name = name
-        if created:
-            user.set_password(phone[:8])
-        user.save()
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            user, created = User.objects.get_or_create(username=phone, phone=phone)
+            user.email = email
+            user.name = name
+            if created:
+                user.set_password(phone[:8])
+            user.save()
 
         order, created = Order.objects.get_or_create(customer=user, complete=False)
         order.status = Order.OrderStatus.customer_confirmed
@@ -154,13 +157,14 @@ class CheckoutView(View):
             items = cookieData['items']
             for item in items:
                 product = ProductModel.objects.get(uuid=item['product'].uuid)
+
                 size = SizeModel.objects.get(uuid=item['size'])
                 color = ColorModel.objects.get(uuid=item['color'])
                 OrderItem.objects.get_or_create(order=order, product=product,
                                                 quantity=item['quantity'],
                                                 price=product.price, total=item['total'],
-                                                color=color.name,
-                                                size=size.name)
+                                                color=color.uuid,
+                                                size=size.uuid)
 
         order.total = int(cartTotal) + int(delivery_charge)
         order.complete = True
