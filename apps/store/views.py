@@ -132,7 +132,7 @@ class CheckoutView(View):
         else:
             delivery_charge = delivery_object.outside_fee
 
-        user, created = User.objects.get_or_create(phone=phone)
+        user, created = User.objects.get_or_create(username=phone, phone=phone)
         user.email = email
         user.name = name
         if created:
